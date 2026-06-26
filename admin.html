@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Care - Master Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0b1329; }
+        textarea { font-family: 'Fira Code', 'Courier New', Courier, monospace; }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- ১. লগইন স্ক্রিন -->
+    <div id="loginScreen" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center shadow-2xl">
+        <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/20">
+            <i class="fa-solid fa-lock-open text-3xl text-white"></i>
+        </div>
+        <h2 class="text-2xl font-extrabold text-white mb-6">মাস্টার অ্যাডমিন লগইন</h2>
+        
+        <div class="space-y-4 text-left">
+            <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1.5">ইউজার আইডি (Username)</label>
+                <input type="text" id="adminUser" placeholder="admin" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-400 mb-1.5">সিক্রেট পাসওয়ার্ড</label>
+                <input type="password" id="adminPass" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
+            </div>
+            <button onclick="checkAdminLogin()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/10 mt-2">
+                ড্যাশবোর্ডে প্রবেশ করুন
+            </button>
+        </div>
+    </div>
+
+    <!-- ২. ফুল ওয়েবসাইট এইচটিএমএল মাস্টার এডিটর -->
+    <div id="adminDashboard" class="w-full max-w-6xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl hidden flex-col h-[85vh]">
+        <!-- হেডার কন্ট্রোল বার -->
+        <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-code text-blue-500 text-xl"></i>
+                <h3 class="text-base font-bold text-white">Full Site HTML Master Editor</h3>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="fetchCurrentSiteCode()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-semibold transition">
+                    <i class="fa-solid fa-rotate mr-1.5"></i> কোড রিফ্রেশ করুন
+                </button>
+                <button onclick="adminLogout()" class="bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/20 px-4 py-2 rounded-xl text-xs font-semibold transition">
+                    <i class="fa-solid fa-power-off mr-1.5"></i> লগআউট
+                </button>
+            </div>
+        </div>
+
+        <!-- ফুল কোড লেখার মেইন বক্স -->
+        <div class="p-4 flex-1 bg-slate-950">
+            <textarea id="fullHtmlCode" class="w-full h-full bg-slate-950 text-emerald-400 p-4 font-mono text-sm border border-slate-800 rounded-xl focus:outline-none focus:border-blue-600 resize-none overflow-y-auto" placeholder="গিটহাব থেকে কোড লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।"></textarea>
+        </div>
+
+        <!-- ফুটার সেভ বার -->
+        <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center px-6">
+            <p class="text-xs text-slate-500 italic"><i class="fa-solid fa-triangle-exclamation text-amber-500 mr-1"></i> সতর্কবার্তা: এখানে কোড ভুল করলে মূল সাইট ভেঙে যেতে পারে।</p>
+            <button onclick="updateEntireWebsite()" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/20 flex items-center space-x-2">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>সম্পূর্ণ ওয়েবসাইট আপডেট করুন</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // === ১. অ্যাডমিন আইডি ও পাসওয়ার্ড কনফিগারেশন ===
+        const LOGIN_USER = "admin";       // লগইন আইডি
+        const LOGIN_PASS = "mathcare2026"; // আপনার গোপন পাসওয়ার্ড (চেঞ্জ করতে পারেন)
+
+        // === ২. গিটহাব রেপো সেটিংস (আপনার লিংকের সাথে ম্যাচ করা) ===
+        const GITHUB_USER = "rubayet-hasan";       // আপনার ইউজারনেম
+        const GITHUB_REPO = "Podder-s-MATH-CARE";  // আপনার রেপো নাম
+        const FILE_NAME = "index.html";            // মূল ফাইল
+
+        // আপনার GitHub Personal Access Token (PAT) তৈরি করে সেটিকে উল্টো করে (Reverse) এখানে বসাবেন।
+        // উদাহরণ: টোকেন ghp_ABC হলে এখানে লিখবেন CBA_phg
+        const MASKED_TOKEN = "YOUR_REVERSED_GITHUB_TOKEN_HERE"; 
+        const GITHUB_TOKEN = MASKED_TOKEN.split("").reverse().join("");
+
+        let currentFileSha = ""; 
+
+        function checkAdminLogin() {
+            const userIn = document.getElementById('adminUser').value.trim();
+            const passIn = document.getElementById('adminPass').value.trim();
+
+            if(userIn === LOGIN_USER && passIn === LOGIN_PASS) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                document.getElementById('adminDashboard').classList.add('flex');
+                fetchCurrentSiteCode();
+            } else {
+                alert("ভুল ইউজার আইডি অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
+            }
+        }
+
+        function adminLogout() {
+            document.getElementById('adminUser').value = "";
+            document.getElementById('adminPass').value = "";
+            document.getElementById('fullHtmlCode').value = "";
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+        }
+
+        // গিটহাব থেকে কোড রিড করা
+        async function fetchCurrentSiteCode() {
+            const editorBox = document.getElementById('fullHtmlCode');
+            editorBox.value = "গিটহাব থেকে লাইভ কোড সংগ্রহ করা হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন...";
+            
+            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                
+                if(!response.ok) throw new Error("ফাইল লোড করা যায়নি। টোকেন বা সেটিংস চেক করুন।");
+                
+                const data = await response.json();
+                currentFileSha = data.sha; 
+                
+                // UTF-8 সহ সঠিকভাবে ডিকোড করা
+                const decodedCode = decodeURIComponent(escape(atob(data.content)));
+                editorBox.value = decodedCode;
+                
+            } catch (err) {
+                alert("ত্রুটি: " + err.message);
+                editorBox.value = "কোড লোড করতে ব্যর্থ হয়েছে। আপনার GitHub Token চেক করুন।";
+            }
+        }
+
+        // গিটহাবে নতুন কোড সেভ করা
+        async function updateEntireWebsite() {
+            const editedCode = document.getElementById('fullHtmlCode').value;
+            if(!editedCode || !currentFileSha) {
+                alert("কোনো কোড পাওয়া যায়নি অথবা ফাইল এখনো লোড হয়নি!");
+                return;
+            }
+
+            if(!confirm("আপনি কি নিশ্চিত যে সম্পূর্ণ ওয়েবসাইটের কোড পরিবর্তন করতে চান?")) return;
+
+            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
+            const encodedCode = btoa(unescape(encodeURIComponent(editedCode)));
+
+            const requestBody = {
+                message: "Website fully updated via Master Admin Panel",
+                content: encodedCode,
+                sha: currentFileSha
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if(response.ok) {
+                    alert("সফলভাবে সম্পূর্ণ ওয়েবসাইট আপডেট করা হয়েছে! ১-২ মিনিটের মধ্যে গিটহাবে পরিবর্তন লাইভ হয়ে যাবে।");
+                    fetchCurrentSiteCode();
+                } else {
+                    const errData = await response.json();
+                    alert("আপডেট ব্যর্থ হয়েছে: " + errData.message);
+                }
+            } catch (err) {
+                alert("নেটওয়ার্ক এরর: " + err.message);
+            }
+        }
+    </script>
+</body>
+</html>
