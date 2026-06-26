@@ -405,41 +405,7 @@
         </div>
     </section>
 
-<!-- ড্যাশবোর্ড মোডাল (লগইন এবং সাইন-আপ উভয়ের জন্য) -->
-<div id="dashboardModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
-    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-300">
-        <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950">
-            <h3 class="text-lg font-bold text-white flex items-center" id="modalTitle">
-                <i class="fa-solid fa-user-shield text-blue-500 mr-2.5"></i> লগইন পোর্টাল
-            </h3>
-            <button onclick="toggleDashboardModal()" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-700">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
-        
-        <form id="authForm" class="p-6 space-y-4">
-            <!-- নাম ফিল্ড (শুধুমাত্র রেজিস্ট্রেশনের সময় দেখাবে, ডিফল্টভাবে হাইড থাকবে) -->
-            <div id="nameField" class="hidden">
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">শিক্ষার্থীর নাম</label>
-                <input type="text" id="authName" placeholder="আপনার পুরো নাম" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">ইমেইল অ্যাড্রেস</label>
-                <input type="email" id="authEmail" placeholder="e.g., student@email.com" required class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">পাসওয়ার্ড</label>
-                <input type="password" id="authPassword" placeholder="••••••••" required class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
-            </div>
-            
-            <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/10">প্রবেশ করুন</button>
-            
-            <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-800/60" id="authToggleText">
-                নতুন অ্যাকাউন্ট তৈরি করতে চান? <a href="javascript:void(0)" onclick="switchAuthMode(true)" class="text-indigo-400 font-semibold hover:underline">রেজিস্ট্রেশন করুন</a>
-            </div>
-        </form>
-    </div>
-</div>
+
     
     <div id="paymentModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
@@ -545,33 +511,6 @@
     </footer>
 
     <script>
-// লগইন এবং সাইন-আপ মোড পরিবর্তন করার ফাংশন
-let isSignUpMode = false;
-
-function switchAuthMode(signUp) {
-    isSignUpMode = signUp;
-    const nameField = document.getElementById('nameField');
-    const modalTitle = document.getElementById('modalTitle');
-    const submitBtn = document.getElementById('authSubmitBtn');
-    const toggleText = document.getElementById('authToggleText');
-    const nameInput = document.getElementById('authName');
-
-    if (isSignUpMode) {
-        nameField.classList.remove('hidden');
-        nameInput.setAttribute('required', 'required');
-        modalTitle.innerHTML = `<i class="fa-solid fa-user-plus text-indigo-500 mr-2.5"></i> নতুন অ্যাকাউন্ট রেজিস্ট্রেশন`;
-        submitBtn.innerText = 'রেজিস্ট্রেশন সম্পন্ন করুন';
-        submitBtn.className = "w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm rounded-xl transition shadow-lg";
-        toggleText.innerHTML = `পুরোনো অ্যাকাউন্ট আছে? <a href="javascript:void(0)" onclick="switchAuthMode(false)" class="text-blue-400 font-semibold hover:underline">লগইন করুন</a>`;
-    } else {
-        nameField.classList.add('hidden');
-        nameInput.removeAttribute('required');
-        modalTitle.innerHTML = `<i class="fa-solid fa-user-shield text-blue-500 mr-2.5"></i> লগইন পোর্টাল`;
-        submitBtn.innerText = 'প্রবেশ করুন';
-        submitBtn.className = "w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg";
-        toggleText.innerHTML = `নতুন অ্যাকাউন্ট তৈরি করতে চান? <a href="javascript:void(0)" onclick="switchAuthMode(true)" class="text-indigo-400 font-semibold hover:underline">রেজিস্ট্রেশন করুন</a>`;
-    }
-}
 
 // ফর্ম সাবমিট হ্যান্ডলার (Firebase বা ব্যাকএন্ড এপিআই এখানে যুক্ত হবে)
 document.getElementById('authForm').addEventListener('submit', function(e) {
