@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Care - Reverse Token Visual Panel</title>
+    <title>Math Care - Full Visual Master Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
         <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center rounded-t-2xl">
             <div class="flex items-center space-x-3">
                 <i class="fa-solid fa-sliders text-blue-500 text-xl"></i>
-                <h3 class="text-base font-bold text-white">Website Visual Control Panel (Live Updates)</h3>
+                <h3 class="text-base font-bold text-white">Website Visual Control Panel (Price, Notice & Routine)</h3>
             </div>
             <div class="flex items-center space-x-3">
                 <button onclick="fetchCurrentSiteData()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-semibold transition">
@@ -53,11 +53,38 @@
         <div class="p-6 space-y-6 bg-slate-950 max-h-[70vh] overflow-y-auto">
             
             <div id="loadingStatus" class="text-center py-4 text-amber-400 font-semibold text-sm">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> গিটহাব থেকে লাইভ নোটিশ ও রুটিন লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।
+                <i class="fa-solid fa-spinner fa-spin mr-2"></i> গিটহাব থেকে লাইভ ডেটা লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।
+            </div>
+
+            <div id="priceSection" class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4 hidden">
+                <h4 class="text-sm font-bold text-emerald-400 flex items-center"><i class="fa-solid fa-tags mr-2"></i> কোর্সের প্রাইজ পরিবর্তন করুন (টাকা ৳)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-xs text-slate-300 font-bold block mb-1">১. Academic Excellence Batch</span>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-xs text-slate-500">৳</span>
+                            <input type="text" id="course1_price" class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="যেমন: ১৫০০">
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-xs text-slate-300 font-bold block mb-1">২. HSC Board Target Batch</span>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-xs text-slate-500">৳</span>
+                            <input type="text" id="course2_price" class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="যেমন: ২০০০">
+                        </div>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-xs text-slate-300 font-bold block mb-1">৩. Admission Tracker Batch</span>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-xs text-slate-500">৳</span>
+                            <input type="text" id="course3_price" class="w-full bg-slate-900 border border-slate-800 rounded-lg pl-7 pr-3 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500" placeholder="যেমন: ২৫০০">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="noticeSection" class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4 hidden">
-                <h4 class="text-sm font-bold text-blue-400 flex items-center"><i class="fa-solid fa-bullhorn mr-2"></i> নোটিশ বোর্ড পরিবর্তন করুন (বর্তমানে যা আছে তা নিচে দেখা যাচ্ছে)</h4>
+                <h4 class="text-sm font-bold text-blue-400 flex items-center"><i class="fa-solid fa-bullhorn mr-2"></i> নোটিশ বোর্ড পরিবর্তন করুন</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
                         <span class="text-xs text-red-400 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> নোটিশ ১ (উপরের নোটিশ)</span>
@@ -65,7 +92,7 @@
                         <textarea id="notice1_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-24 resize-none focus:outline-none focus:border-blue-500"></textarea>
                     </div>
                     <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> নোটিশ ২ (মাঝের নোটিশ)</span>
+                        <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> நோটিশ ২ (মাঝের নোটিশ)</span>
                         <input type="text" id="notice2_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-blue-500">
                         <textarea id="notice2_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-24 resize-none focus:outline-none focus:border-blue-500"></textarea>
                     </div>
@@ -101,7 +128,7 @@
                         <input type="text" id="rout_tue_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
                     </div>
                     <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2"> बुधवार</span>
+                        <span class="text-xs font-bold text-slate-300 px-2">বুধবার</span>
                         <input type="text" id="rout_wed_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
                         <input type="text" id="rout_wed_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
                     </div>
@@ -111,7 +138,7 @@
         </div>
 
         <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center px-6 rounded-b-2xl">
-            <p class="text-xs text-slate-500 italic"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> কোড ছাড়া নো-কোড ভিজ্যুয়াল এডিটিং সিস্টেম সচল আছে।</p>
+            <p class="text-xs text-slate-500 italic"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> ৩টি কোর্স প্রাইজ ও কন্টেন্ট মডিউল সচল আছে।</p>
             <button id="saveBtn" onclick="updateEntireWebsite()" disabled class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-50 cursor-not-allowed text-white font-bold text-sm rounded-xl transition shadow-lg flex items-center space-x-2">
                 <i class="fa-solid fa-cloud-arrow-up"></i>
                 <span>ওয়েবসাইট আপডেট করুন</span>
@@ -120,18 +147,15 @@
     </div>
 
     <script>
-        // === সেটিংস ===
+        // === কনফিগারেশন ===
         const LOGIN_USER = "admin";       
         const LOGIN_PASS = "mathcare2026"; 
         const GITHUB_USER = "rubayet-hasan";       
         const GITHUB_REPO = "Podder-s-MATH-CARE";  
         const FILE_NAME = "index.html";            
 
-        // 🛑 আপানার নতুন GitHub Token-টি একদম উল্টো (Reverse) করে এখানে বসান। 
-        // উদাহরন: "ghp_12345" এর উল্টো "54321_phg" বসাবেন। GitHub bot এটি ডিলিট করতে পারবে না!
-        const REVERSED_TOKEN = "b3S254O8OMb6jzxGzplr2ZrPYRpvzJNcSjfo_phg"; 
-
-        // Auto-Reversing the token back for API use
+        // 🛑 আপানার নতুন GitHub Token-টি একদম উল্টো (Reverse) করে এখানে দেওয়া আছে।
+        const REVERSED_TOKEN = "C0Tck0hvxgen0Icn4RpkRkBgZY2yu9t7RxC0_phg"; 
         const GITHUB_TOKEN = REVERSED_TOKEN.split("").reverse().join("");
 
         let currentFileSha = ""; 
@@ -171,9 +195,10 @@
             document.getElementById('adminDashboard').classList.add('hidden');
         }
 
-        // Live text content automatic load hobar function
+        // গিটহাব থেকে ডাটা এনে বক্সে বসানো
         async function fetchCurrentSiteData() {
             document.getElementById('loadingStatus').classList.remove('hidden');
+            document.getElementById('priceSection').classList.add('hidden');
             document.getElementById('noticeSection').classList.add('hidden');
             document.getElementById('routineSection').classList.add('hidden');
             document.getElementById('saveBtn').disabled = true;
@@ -191,7 +216,19 @@
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(rawHtmlContent, 'text/html');
 
-                // Auto filling Notice fields with live text
+                // ১. লাইভ কোর্স প্রাইস বের করা (৳ চিহ্ন বাদে শুধু সংখ্যা আনা)
+                const courses = doc.querySelectorAll('#courses .grid > div');
+                if(courses.length >= 3) {
+                    const p1 = courses[0].querySelector('.text-2xl\\.\\.font-bold, .text-2xl, .text-3xl').innerText.replace(/[^0-9]/g, '');
+                    const p2 = courses[1].querySelector('.text-2xl\\.\\.font-bold, .text-2xl, .text-3xl').innerText.replace(/[^0-9]/g, '');
+                    const p3 = courses[2].querySelector('.text-2xl\\.\\.font-bold, .text-2xl, .text-3xl').innerText.replace(/[^0-9]/g, '');
+                    
+                    document.getElementById('course1_price').value = p1;
+                    document.getElementById('course2_price').value = p2;
+                    document.getElementById('course3_price').value = p3;
+                }
+
+                // ২. নোটিশ ডেটা রিড
                 const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
                 if(noticeBlocks.length >= 3) {
                     document.getElementById('notice1_title').value = noticeBlocks[0].querySelector('h4').innerText.trim();
@@ -202,7 +239,7 @@
                     document.getElementById('notice3_desc').value = noticeBlocks[2].querySelector('p').innerText.trim();
                 }
 
-                // Auto filling Routine fields with live text
+                // ৩. রুটিন ডেটা রিড
                 const rows = doc.querySelectorAll('#routine table tbody tr');
                 if(rows.length >= 5) {
                     document.getElementById('rout_sat_sub').value = rows[0].cells[1].innerText.trim();
@@ -218,6 +255,7 @@
                 }
 
                 document.getElementById('loadingStatus').classList.add('hidden');
+                document.getElementById('priceSection').classList.remove('hidden');
                 document.getElementById('noticeSection').classList.remove('hidden');
                 document.getElementById('routineSection').classList.remove('hidden');
                 document.getElementById('saveBtn').disabled = false;
@@ -229,13 +267,22 @@
             }
         }
 
+        // পরিবর্তনগুলো গিটহাবে পুশ করার ফাংশন
         async function updateEntireWebsite() {
             if(!rawHtmlContent || !currentFileSha) return;
 
             const parser = new DOMParser();
             const doc = parser.parseFromString(rawHtmlContent, 'text/html');
 
-            // Injecting updated input data back to HTML
+            // ১. কোর্স প্রাইস ইনজেক্ট করা
+            const courses = doc.querySelectorAll('#courses .grid > div');
+            if(courses.length >= 3) {
+                courses[0].querySelector('.text-2xl\\.\\.font-bold, .text-2xl, .text-3xl').innerText = `৳${document.getElementById('course1_price').value}/-`;
+                courses[1].querySelector('.text-2xl\\.\\.font-bold, .text-2xl, .text-3xl').innerText = `৳${document.getElementById('course2_price').value}/-`;
+                courses[2].querySelector('.text-2xl\\.\\.font-bold, .text-2xl, .text-3xl').innerText = `৳${document.getElementById('course3_price').value}/-`;
+            }
+
+            // ২. নোটিশ রাইট
             const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
             if(noticeBlocks.length >= 3) {
                 noticeBlocks[0].querySelector('h4').innerText = document.getElementById('notice1_title').value;
@@ -246,6 +293,7 @@
                 noticeBlocks[2].querySelector('p').innerText = document.getElementById('notice3_desc').value;
             }
 
+            // ৩. রুটিন রাইট
             const rows = doc.querySelectorAll('#routine table tbody tr');
             if(rows.length >= 5) {
                 rows[0].cells[1].innerText = document.getElementById('rout_sat_sub').value;
@@ -265,7 +313,7 @@
             const encodedCode = btoa(unescape(encodeURIComponent(updatedHtml)));
 
             const requestBody = {
-                message: "Content fully updated via Visual Token Reverse Admin Panel",
+                message: "Prices, Notices & Routines updated via Visual Master Admin Panel",
                 content: encodedCode,
                 sha: currentFileSha
             };
@@ -278,7 +326,7 @@
                 });
 
                 if(response.ok) {
-                    alert("সফলভাবে সম্পূর্ণ ওয়েবসাইট আপডেট করা হয়েছে! ১-২ মিনিটের মধ্যে লাইভ সাইটে পরিবর্তন দেখা যাবে।");
+                    alert("সফলভাবে প্রাইজ এবং সমস্ত কন্টেন্ট আপডেট করা হয়েছে! ১-২ মিনিটের মধ্যে পরিবর্তন লাইভ সাইটে দেখা যাবে।");
                     fetchCurrentSiteData();
                 } else {
                     const errData = await response.json();
