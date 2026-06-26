@@ -52,7 +52,17 @@
                 <a href="#contact" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/40 transition">যোগাযোগ</a>
             </nav>
 
-
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDashboardModal()" class="flex items-center space-x-2 bg-slate-900 border border-slate-800 hover:border-blue-500/50 px-4 py-2 rounded-xl text-sm font-medium transition duration-300 shadow-sm group">
+                    <i class="fa-solid fa-right-to-bracket text-slate-400 group-hover:text-blue-400 transition"></i>
+                    <span>লগইন / সাইন আপ</span>
+                </button>
+                <div class="w-10 h-10 rounded-full border-2 border-slate-800 bg-slate-900 flex items-center justify-center overflow-hidden cursor-pointer hover:border-blue-500 transition shadow-inner">
+                    <i class="fa-solid fa-user-graduate text-slate-400 text-lg"></i>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <section id="home" class="relative min-h-[85vh] flex items-center bg-cover bg-center overflow-hidden" style="background-image: url('image_c7f0e9.jpg');">
         <div class="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-900/80 to-slate-950 backdrop-blur-sm"></div>
@@ -395,7 +405,40 @@
         </div>
     </section>
 
- 
+    <div id="dashboardModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-300">
+            <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+                <h3 class="text-lg font-bold text-white flex items-center">
+                    <i class="fa-solid fa-user-shield text-blue-500 mr-2.5"></i> স্টুডেন্ট ড্যাশবোর্ড পোর্টাল
+                </h3>
+                <button onclick="toggleDashboardModal()" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-700">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('সফলভাবে লগইন করা হয়েছে!'); toggleDashboardModal();" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">স্টুডেন্ট আইডি / মোবাইল নম্বর</label>
+                    <input type="text" placeholder="e.g., 01712345678" required class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">পাসওয়ার্ড</label>
+                    <input type="password" placeholder="••••••••" required class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <label class="flex items-center space-x-2 text-slate-400 cursor-pointer">
+                        <input type="checkbox" class="rounded bg-slate-950 border-slate-800 text-blue-500 focus:ring-0">
+                        <span>মনে রাখুন</span>
+                    </label>
+                    <a href="#" class="text-blue-400 hover:underline">পাসওয়ার্ড ভুলে গেছেন?</a>
+                </div>
+                <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/10">প্রবেশ করুন</button>
+                <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-800/60">
+                    নতুন অ্যাকাউন্ট তৈরি করতে চান? <a href="#" class="text-indigo-400 font-semibold hover:underline">রেজিস্ট্রেশন করুন</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="paymentModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
@@ -500,7 +543,18 @@
     </footer>
 
     <script>
-  
+        // Toggle Functionality for Dashboard Login Modal
+        function toggleDashboardModal() {
+            const modal = document.getElementById('dashboardModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        }
+
         // Play/Trigger Mock Handler for Course Demo Videos
         function playDemoVideo(subjectName) {
             alert(`"${subjectName}" বিষয়ের ফ্রি ডেমো ও ওরিয়েন্টেশন ক্লাস প্লেয়ারটি শীঘ্রই শুরু হচ্ছে! নতুন উইন্ডোতে লোড হচ্ছে...`);
@@ -556,7 +610,13 @@
             payModal.classList.add('hidden');
         }
 
-      
+        // Global key event listeners to seamlessly dismiss overlays
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('dashboardModal').classList.add('hidden');
+                document.getElementById('paymentModal').classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
