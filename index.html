@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Care - Secure Visual Admin Panel</title>
+    <title>Math Care - Visual Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
@@ -54,20 +54,8 @@
         </div>
 
         <!-- মেইন ফর্ম বডি -->
-        <div class="p-6 space-y-6 bg-slate-950 max-h-[70vh] overflow-y-auto">
+        <div class="p-6 space-y-8 bg-slate-950 max-h-[70vh] overflow-y-auto">
             
-            <!-- গিটহাব টোকেন সেটিং (সুরক্ষিত বক্স) -->
-            <div class="bg-slate-900/50 p-4 rounded-xl border border-dashed border-slate-800 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div class="space-y-0.5">
-                    <h5 class="text-xs font-bold text-slate-300 flex items-center"><i class="fa-solid fa-key text-amber-500 mr-1.5"></i> গিটহাব সিকিউরিটি টোকেন (GitHub Token)</h5>
-                    <p class="text-[11px] text-slate-500">যেহেতু রেপোজিটরি পাবলিক, তাই আপনার টোকেনটি এখানে দিয়ে একবার সেভ করে রাখুন।</p>
-                </div>
-                <div class="flex items-center gap-2 md:w-2/3">
-                    <input type="password" id="gitTokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none transition">
-                    <button onclick="saveTokenToLocal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-4 py-1.5 font-semibold rounded-lg transition whitespace-nowrap">টোকেন সেভ করুন</button>
-                </div>
-            </div>
-
             <!-- সেকশন ১: নোটিশ বোর্ড এডিটর -->
             <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
                 <h4 class="text-sm font-bold text-blue-400 flex items-center"><i class="fa-solid fa-bullhorn mr-2"></i> লাইভ নোটিশ বোর্ড পরিবর্তন করুন</h4>
@@ -147,9 +135,13 @@
         const GITHUB_REPO = "Podder-s-MATH-CARE";  
         const FILE_NAME = "index.html";            
 
+        // 🛑 আপনার গিটহাব থেকে পাওয়া নতুন সোজা টোকেনটি এখানে বসান
+        const GITHUB_TOKEN = "YOUR_NEW_GITHUB_TOKEN_HERE";
+
         let currentFileSha = ""; 
         let rawHtmlContent = "";
 
+        // উইন্ডো লোড হওয়ার সাথে সাথে লগইন সেশন চেক হবে
         window.onload = function() {
             if (localStorage.getItem("adminLoggedIn") === "true") {
                 showDashboard();
@@ -163,7 +155,7 @@
             const passIn = document.getElementById('adminPass').value.trim();
 
             if(userIn === LOGIN_USER && passIn === LOGIN_PASS) {
-                localStorage.setItem("adminLoggedIn", "true");
+                localStorage.setItem("adminLoggedIn", "true"); // লগইন সেশন ব্রাউজারে সেভ
                 showDashboard();
             } else {
                 alert("ভুল ইউজার আইডি অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
@@ -174,58 +166,32 @@
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('adminDashboard').classList.remove('hidden');
             document.getElementById('adminDashboard').classList.add('flex');
-            
-            // পূর্বে টোকেন সেভ করা থাকলে বক্সে লোড করা
-            const savedToken = localStorage.getItem("git_secret_token");
-            if(savedToken) {
-                document.getElementById('gitTokenInput').value = savedToken;
-            }
-            
             fetchCurrentSiteData();
-        }
-
-        function saveTokenToLocal() {
-            const tokenVal = document.getElementById('gitTokenInput').value.trim();
-            if(!tokenVal) {
-                alert("দয়া করে একটি বৈধ গিটহাব টোকেন লিখুন!");
-                return;
-            }
-            localStorage.setItem("git_secret_token", tokenVal);
-            alert("টোকেনটি আপনার ব্রাউজারে সুরক্ষিতভাবে সেভ করা হয়েছে!");
-            fetchCurrentSiteData();
-        }
-
-        function getStoredToken() {
-            return localStorage.getItem("git_secret_token") || "";
         }
 
         function adminLogout() {
-            localStorage.removeItem("adminLoggedIn");
+            localStorage.removeItem("adminLoggedIn"); // সেশন ডিলিট
             document.getElementById('adminPass').value = "";
             document.getElementById('loginScreen').classList.remove('hidden');
             document.getElementById('adminDashboard').classList.add('hidden');
         }
 
+        // গিটহাব থেকে মেইন সাইটের ডেটা রিড করে ইনপুট বক্সে সাজানো
         async function fetchCurrentSiteData() {
-            const token = getStoredToken();
-            if(!token) {
-                alert("কানেকশন ক্র্যাশ: কোনো গিটহাব টোকেন পাওয়া যায়নি! দয়া করে উপরে টোকেন বসিয়ে সেভ করুন।");
-                return;
-            }
-
             const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
             try {
-                const response = await fetch(url, { headers: { 'Authorization': `token ${token}` } });
-                if(!response.ok) throw new Error("ডেটা লোড ব্যর্থ! টোকেনের মেয়াদ অথবা রেপো পারমিশন চেক করুন।");
+                const response = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
+                if(!response.ok) throw new Error("ডেটা লোড ব্যর্থ! আপনার গিটহাব টোকেন বা পারমিশন চেক করুন।");
                 
                 const data = await response.json();
                 currentFileSha = data.sha; 
                 rawHtmlContent = decodeURIComponent(escape(atob(data.content)));
 
+                // ভার্চুয়াল ডম পার্সার তৈরি করে ডেটা রিড করা
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(rawHtmlContent, 'text/html');
 
-                // নোটিশ ডেটা রিড
+                // নোটিশগুলো খুঁজে বের করা এবং ইনপুট বক্সে বসানো
                 const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
                 if(noticeBlocks.length >= 3) {
                     document.getElementById('notice1_title').value = noticeBlocks[0].querySelector('h4').innerText;
@@ -236,41 +202,41 @@
                     document.getElementById('notice3_desc').value = noticeBlocks[2].querySelector('p').innerText;
                 }
 
-                // রুটিন ডেটা রিড
+                // রুটিনের ডেটাগুলো খুঁজে বক্সে বসানো
                 const rows = doc.querySelectorAll('#routine table tbody tr');
                 if(rows.length >= 5) {
                     document.getElementById('rout_sat_sub').value = rows[0].cells[1].innerText;
                     document.getElementById('rout_sat_time').value = rows[0].cells[3].innerText;
+
                     document.getElementById('rout_sun_sub').value = rows[1].cells[1].innerText;
                     document.getElementById('rout_sun_time').value = rows[1].cells[3].innerText;
+
                     document.getElementById('rout_mon_sub').value = rows[2].cells[1].innerText;
                     document.getElementById('rout_mon_time').value = rows[2].cells[3].innerText;
+
                     document.getElementById('rout_tue_sub').value = rows[3].cells[1].innerText;
                     document.getElementById('rout_tue_time').value = rows[3].cells[3].innerText;
+
                     document.getElementById('rout_wed_sub').value = rows[4].cells[1].innerText;
                     document.getElementById('rout_wed_time').value = rows[4].cells[3].innerText;
                 }
 
             } catch (err) {
-                alert("কানেকশন ক্র্যাশ: ফাইল ফেচ করতে ব্যর্থ। সেটিংস বা নেটওয়ার্ক চেক করুন।");
+                alert("ত্রুটি: " + err.message);
             }
         }
 
+        // ইনপুট বক্সের সাধারণ টেক্সট মেইন এইচটিএমএল ফাইলে রিপ্লেস করে সেভ করা
         async function updateEntireWebsite() {
-            const token = getStoredToken();
-            if(!token) {
-                alert("গিটহাব টোকেন ছাড়া সাইট আপডেট করা সম্ভব নয়!");
-                return;
-            }
             if(!rawHtmlContent || !currentFileSha) {
-                alert("মেইন ফাইল এখনো সফলভাবে লোড হয়নি!");
+                alert("মেইন ফাইল এখনো লোড হয়নি!");
                 return;
             }
 
             const parser = new DOMParser();
             const doc = parser.parseFromString(rawHtmlContent, 'text/html');
 
-            // নোটিশ রাইট
+            // নোটিশ আপডেট লজিক
             const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
             if(noticeBlocks.length >= 3) {
                 noticeBlocks[0].querySelector('h4').innerText = document.getElementById('notice1_title').value;
@@ -281,17 +247,21 @@
                 noticeBlocks[2].querySelector('p').innerText = document.getElementById('notice3_desc').value;
             }
 
-            // রুটিন রাইট
+            // রুটিন আপডেট লজিক
             const rows = doc.querySelectorAll('#routine table tbody tr');
             if(rows.length >= 5) {
                 rows[0].cells[1].innerText = document.getElementById('rout_sat_sub').value;
                 rows[0].cells[3].innerText = document.getElementById('rout_sat_time').value;
+
                 rows[1].cells[1].innerText = document.getElementById('rout_sun_sub').value;
                 rows[1].cells[3].innerText = document.getElementById('rout_sun_time').value;
+
                 rows[2].cells[1].innerText = document.getElementById('rout_mon_sub').value;
                 rows[2].cells[3].innerText = document.getElementById('rout_mon_time').value;
+
                 rows[3].cells[1].innerText = document.getElementById('rout_tue_sub').value;
                 rows[3].cells[3].innerText = document.getElementById('rout_tue_time').value;
+
                 rows[4].cells[1].innerText = document.getElementById('rout_wed_sub').value;
                 rows[4].cells[3].innerText = document.getElementById('rout_wed_time').value;
             }
@@ -301,7 +271,7 @@
             const encodedCode = btoa(unescape(encodeURIComponent(updatedHtml)));
 
             const requestBody = {
-                message: "Website Content updated via Visual Admin Panel Securely",
+                message: "Website Content updated via Visual Master Admin Panel",
                 content: encodedCode,
                 sha: currentFileSha
             };
@@ -309,7 +279,7 @@
             try {
                 const response = await fetch(url, {
                     method: 'PUT',
-                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify(requestBody)
                 });
 
