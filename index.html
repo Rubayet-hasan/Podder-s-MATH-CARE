@@ -1,299 +1,622 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Care - Visual Admin Panel</title>
+    <title>Podder's MATH CARE - Excellence in Science & Math</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0b1329; }
+        body {
+            font-family: 'Inter', 'Hind Siliguri', sans-serif;
+            background-color: #0b1329;
+        }
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1329;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6;
+        }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex items-center justify-center p-4">
+<body class="text-slate-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
-    <!-- ১. প্রফেশনাল লগইন স্ক্রিন -->
-    <div id="loginScreen" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center shadow-2xl hidden">
-        <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/20">
-            <i class="fa-solid fa-user-shield text-3xl text-white"></i>
-        </div>
-        <h2 class="text-2xl font-bold text-white mb-6">মাস্টার ভিজ্যুয়াল অ্যাডমিন</h2>
-        
-        <div class="space-y-4 text-left">
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">ইউজার আইডি (Username)</label>
-                <input type="text" id="adminUser" value="admin" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-            </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">সিক্রেট পাসওয়ার্ড</label>
-                <input type="password" id="adminPass" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-            </div>
-            <button onclick="checkAdminLogin()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/10 mt-2">
-                ড্যাশবোর্ডে প্রবেশ করুন
-            </button>
-        </div>
-    </div>
+    <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-square-root-variable text-xl text-white"></i>
+                </div>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-blue-400 bg-clip-text text-transparent">
+                    Podder's <span class="text-blue-500">MATH CARE</span>
+                </span>
+            </a>
 
-    <!-- ২. কোড-মুক্ত ভিজ্যুয়াল অ্যাডমিন ড্যাশবোর্ড -->
-    <div id="adminDashboard" class="w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl hidden flex-col">
-        <!-- হেডার সেকশন -->
-        <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center rounded-t-2xl">
-            <div class="flex items-center space-x-3">
-                <i class="fa-solid fa-sliders text-blue-500 text-xl"></i>
-                <h3 class="text-base font-bold text-white">Website Visual Control Panel</h3>
-            </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="fetchCurrentSiteData()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-semibold transition">
-                    <i class="fa-solid fa-rotate mr-1.5"></i> রিফ্রেশ ডেটা
+            <nav class="hidden md:flex items-center space-x-1">
+                <a href="#home" class="px-4 py-2 rounded-lg text-sm font-medium text-blue-400 bg-slate-900/50 border border-slate-800/50">হোম</a>
+                <a href="#courses" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/40 transition">কোর্স সমূহ</a>
+                <a href="#routine" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/40 transition">রুটিন ও নোটিশ</a>
+                <a href="#about" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/40 transition">আমাদের সম্পর্কে</a>
+                <a href="#contact" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-900/40 transition">যোগাযোগ</a>
+            </nav>
+
+            <div class="flex items-center space-x-4">
+                <button onclick="toggleDashboardModal()" class="flex items-center space-x-2 bg-slate-900 border border-slate-800 hover:border-blue-500/50 px-4 py-2 rounded-xl text-sm font-medium transition duration-300 shadow-sm group">
+                    <i class="fa-solid fa-right-to-bracket text-slate-400 group-hover:text-blue-400 transition"></i>
+                    <span>লগইন / সাইন আপ</span>
                 </button>
-                <button onclick="adminLogout()" class="bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/20 px-4 py-2 rounded-xl text-xs font-semibold transition">
-                    <i class="fa-solid fa-power-off mr-1.5"></i> লগআউট
-                </button>
+                <div class="w-10 h-10 rounded-full border-2 border-slate-800 bg-slate-900 flex items-center justify-center overflow-hidden cursor-pointer hover:border-blue-500 transition shadow-inner">
+                    <i class="fa-solid fa-user-graduate text-slate-400 text-lg"></i>
+                </div>
             </div>
         </div>
+    </header>
 
-        <!-- মেইন ফর্ম বডি -->
-        <div class="p-6 space-y-8 bg-slate-950 max-h-[70vh] overflow-y-auto">
+    <section id="home" class="relative min-h-[85vh] flex items-center bg-cover bg-center overflow-hidden" style="background-image: url('image_c7f0e9.jpg');">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-900/80 to-slate-950 backdrop-blur-sm"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+                <div class="inline-flex items-center space-x-2 bg-blue-500/10 border border-blue-500/30 px-3 py-1.5 rounded-full text-xs font-semibold text-blue-400 tracking-wide uppercase">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    </span>
+                    <span>এডমিশন ও একাডেমি সেশন ২০২৬</span>
+                </div>
+                
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
+                    Class 9-10 & Higher Math <br>
+                    <span class="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                        Excellence Hub
+                    </span>
+                </h1>
+                
+                <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                    গণিত ও বিজ্ঞানের কঠিন তত্ত্বগুলোকে সহজ ও সাবলীল ভাষায় শিখতে আজই যুক্ত হও পোদ্দারস ম্যাথ কেয়ারে। আমাদের অভিজ্ঞ মেন্টরশিপে নিশ্চিত করো তোমার নিখুঁত প্রস্তুতি।
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                    <a href="#courses" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/20 hover:from-blue-500 hover:to-indigo-500 transition-all text-center transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-rocket mr-2"></i> কোর্স সমূহ দেখুন
+                    </a>
+                    <a href="#routine" class="w-full sm:w-auto px-8 py-4 bg-slate-900/80 hover:bg-slate-800 text-slate-200 font-semibold rounded-xl border border-slate-800 hover:border-slate-700 transition-all text-center">
+                        আজকের রুটিন
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 max-w-lg mx-auto lg:mx-0">
+                    <div class="bg-slate-900/60 backdrop-blur border border-slate-800/80 p-4 rounded-xl text-center shadow-xl">
+                        <div class="text-2xl sm:text-3xl font-black text-blue-400">৫০০+</div>
+                        <div class="text-xs text-slate-400 mt-1">সক্রিয় শিক্ষার্থী</div>
+                    </div>
+                    <div class="bg-slate-900/60 backdrop-blur border border-slate-800/80 p-4 rounded-xl text-center shadow-xl">
+                        <div class="text-2xl sm:text-3xl font-black text-indigo-400">৫০+</div>
+                        <div class="text-xs text-slate-400 mt-1">GPA ৫ (A+) অর্জনকারী</div>
+                    </div>
+                    <div class="bg-slate-900/60 backdrop-blur border border-slate-800/80 p-4 rounded-xl text-center shadow-xl col-span-2 sm:col-span-1">
+                        <div class="text-2xl sm:text-3xl font-black text-purple-400">৯৮%</div>
+                        <div class="text-xs text-slate-400 mt-1">সফলতার হার</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative group">
+                    <div class="absolute -inset-1.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
+                    
+                    <div class="relative bg-slate-900 border-4 border-slate-800 rounded-3xl overflow-hidden shadow-2xl p-4 max-w-[340px] text-center">
+                        <div class="w-64 h-64 mx-auto rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 flex items-center justify-center">
+                            <img src="https://i.ibb.co.com/8n9pD3gL/45992366101.png" alt="Instructor Profile" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-full h-full object-cover">
+                            <div class="hidden w-full h-full bg-slate-900 flex-col items-center justify-center text-slate-500">
+                                <i class="fa-solid fa-user-tie text-6xl text-blue-500 mb-2"></i>
+                                <span class="text-xs">Instructor Photo</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-lg font-bold text-white tracking-wide">PODDER BIPRO</h3>
+                            <p class="text-xs text-blue-400 font-medium mt-1">Math & Science Specialist</p>
+                            <div class="flex justify-center space-x-3 mt-3 text-slate-400 text-sm">
+                                <span class="bg-slate-950 px-2 py-1 rounded border border-slate-800">৫+ বছর অভিজ্ঞতা</span>
+                                <span class="bg-slate-950 px-2 py-1 rounded border border-slate-800">বুয়েট/ঢাবি এক্সপার্টস</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="routine" class="py-20 bg-slate-950 border-t border-b border-slate-900 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- সেকশন ১: নোটিশ বোর্ড এডিটর -->
-            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
-                <h4 class="text-sm font-bold text-blue-400 flex items-center"><i class="fa-solid fa-bullhorn mr-2"></i> লাইভ নোটিশ বোর্ড পরিবর্তন করুন</h4>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-red-400 font-bold">নোটিশ ১ (উপরের নোটিশ)</span>
-                        <input type="text" id="notice1_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none" placeholder="শিরোনাম">
-                        <textarea id="notice1_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-20 resize-none focus:outline-none" placeholder="বিস্তারিত নোটিশ"></textarea>
-                    </div>
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-emerald-400 font-bold">নোটিশ ২ (মাঝের নোটিশ)</span>
-                        <input type="text" id="notice2_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none" placeholder="শিরোনাম">
-                        <textarea id="notice2_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-20 resize-none focus:outline-none" placeholder="বিস্তারিত নোটিশ"></textarea>
-                    </div>
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-amber-400 font-bold">নোটিশ ৩ (নিচের নোটিশ)</span>
-                        <input type="text" id="notice3_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none" placeholder="শিরোনাম">
-                        <textarea id="notice3_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-20 resize-none focus:outline-none" placeholder="বিস্তারিত নোটিশ"></textarea>
-                    </div>
-                </div>
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-extrabold text-white tracking-tight sm:text-4xl mb-4">
+                    ডায়নামিক নোটিশ ও সাপ্তাহিক রুটিন
+                </h2>
+                <div class="h-1 w-20 bg-blue-500 mx-auto rounded"></div>
             </div>
 
-            <!-- সেকশন ২: সাপ্তাহিক রুটিন এডিটর -->
-            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
-                <h4 class="text-sm font-bold text-indigo-400 flex items-center"><i class="fa-solid fa-calendar-days mr-2"></i> সাপ্তাহিক ক্লাস রুটিন এডিট করুন</h4>
-                <div class="space-y-3">
-                    <!-- শনি -->
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">শনিবার</span>
-                        <input type="text" id="rout_sat_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="বিষয়">
-                        <input type="text" id="rout_sat_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="সময় (যেমন: 04:00 PM)">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <div class="lg:col-span-5 bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+                    <div class="bg-slate-900 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-bullhorn text-red-400 mr-2.5 animate-bounce"></i> লাইভ নোটিশ বোর্ড
+                        </h3>
+                        <span class="bg-red-500/10 text-red-400 text-xs px-2.5 py-1 rounded-full font-semibold uppercase tracking-wider border border-red-500/20">Live</span>
                     </div>
-                    <!-- রবি -->
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">রবিবার</span>
-                        <input type="text" id="rout_sun_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="বিষয়">
-                        <input type="text" id="rout_sun_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="সময়">
-                    </div>
-                    <!-- সোম -->
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">সোমবার</span>
-                        <input type="text" id="rout_mon_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="বিষয়">
-                        <input type="text" id="rout_mon_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="সময়">
-                    </div>
-                    <!-- মঙ্গল -->
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">মঙ্গলবার</span>
-                        <input type="text" id="rout_tue_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="বিষয়">
-                        <input type="text" id="rout_tue_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="সময়">
-                    </div>
-                    <!-- বুধ -->
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">বুধবার</span>
-                        <input type="text" id="rout_wed_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="বিষয়">
-                        <input type="text" id="rout_wed_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none" placeholder="সময়">
+                    <div class="p-6 space-y-4 max-h-[380px] overflow-y-auto">
+                        <div class="p-4 bg-slate-950/80 border-l-4 border-blue-500 rounded-r-xl space-y-1">
+                            <div class="flex justify-between items-center text-xs text-slate-400">
+                                <span>২৬ জুন, ২০২৬</span>
+                                <span class="text-blue-400 font-semibold">গুরুত্বপূর্ণ</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-200">উচ্চতর গণিত মেগা মক টেস্টের সময়সূচী পরিবর্তন</h4>
+                            <p class="text-xs text-slate-400">আগামীকালের বিশেষ পরীক্ষাটি বিকাল ৪:০০ টার পরিবর্তে সন্ধ্যা ৬:০০ টায় অনুষ্ঠিত হবে।</p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950/80 border-l-4 border-emerald-500 rounded-r-xl space-y-1">
+                            <div class="flex justify-between items-center text-xs text-slate-400">
+                                <span>২৪ জুন, ২০২৬</span>
+                                <span class="text-emerald-400 font-semibold">ভর্তি নোটিশ</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-200">নতুন ফিজিক্স ও কেমিস্ট্রি ক্র্যাশ কোর্সে ভর্তি চলছে</h4>
+                            <p class="text-xs text-slate-400">প্রথম ৫০ জনের জন্য ২০% বিশেষ ছাড়ের অফারটি শেষ হচ্ছে আগামী পরশু।</p>
+                        </div>
+
+                        <div class="p-4 bg-slate-950/80 border-l-4 border-amber-500 rounded-r-xl space-y-1">
+                            <div class="flex justify-between items-center text-xs text-slate-400">
+                                <span>২০ জুন, ২০২৬</span>
+                                <span class="text-amber-400 font-semibold">আপডেট</span>
+                            </div>
+                            <h4 class="font-bold text-sm text-slate-200">আইসিটি (ICT) ফ্রি লাইভ ওরিয়েন্টেশন ক্লাস</h4>
+                            <p class="text-xs text-slate-400">আমাদের অফিশিয়াল ফেসবুক পেজে সরাসরি সম্প্রচার করা হবে ফ্রি সেশনটি।</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+                    <div class="bg-slate-900 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-white flex items-center">
+                            <i class="fa-solid fa-calendar-days text-blue-400 mr-2.5"></i> সাপ্তাহিক ক্লাস রুটিন
+                        </h3>
+                        <span class="text-xs text-slate-400">আপডেট: জুন ২০২৬</span>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-sm text-slate-300">
+                            <thead>
+                                <tr class="bg-slate-950 border-b border-slate-800 text-slate-400 font-medium">
+                                    <th class="p-4 text-center">দিন</th>
+                                    <th class="p-4">বিষয়</th>
+                                    <th class="p-4">ব্যাচ</th>
+                                    <th class="p-4 text-right">সময়</th>
+                                        </tr>
+                                    </thead>
+                            <tbody class="divide-y divide-slate-800/60">
+                                <tr class="hover:bg-slate-950/40 transition">
+                                    <td class="p-4 text-center font-bold text-blue-400 bg-slate-950/20">শনিবার</td>
+                                    <td class="p-4 font-semibold text-white">General Math</td>
+                                    <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300">Batch A (Class 10)</span></td>
+                                    <td class="p-4 text-right font-mono text-xs text-slate-400">04:00 PM</td>
+                                </tr>
+                                <tr class="hover:bg-slate-950/40 transition">
+                                    <td class="p-4 text-center font-bold text-blue-400 bg-slate-950/20">রবিবার</td>
+                                    <td class="p-4 font-semibold text-white">Physics</td>
+                                    <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300">Batch B (Class 9)</span></td>
+                                    <td class="p-4 text-right font-mono text-xs text-slate-400">05:30 PM</td>
+                                </tr>
+                                <tr class="hover:bg-slate-950/40 transition">
+                                    <td class="p-4 text-center font-bold text-blue-400 bg-slate-950/20">সোমবার</td>
+                                    <td class="p-4 font-semibold text-white">Higher Math</td>
+                                    <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300">Batch A (Class 10)</span></td>
+                                    <td class="p-4 text-right font-mono text-xs text-slate-400">04:00 PM</td>
+                                </tr>
+                                <tr class="hover:bg-slate-950/40 transition">
+                                    <td class="p-4 text-center font-bold text-blue-400 bg-slate-950/20">মঙ্গলবার</td>
+                                    <td class="p-4 font-semibold text-white">Chemistry</td>
+                                    <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300">Batch B (Class 9)</span></td>
+                                    <td class="p-4 text-right font-mono text-xs text-slate-400">05:30 PM</td>
+                                </tr>
+                                <tr class="hover:bg-slate-950/40 transition">
+                                    <td class="p-4 text-center font-bold text-blue-400 bg-slate-950/20">বুধবার</td>
+                                    <td class="p-4 font-semibold text-white">ICT</td>
+                                    <td class="p-4"><span class="bg-slate-800 px-2 py-1 rounded text-xs text-slate-300">Combined Batch</span></td>
+                                    <td class="p-4 text-right font-mono text-xs text-slate-400">07:00 PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
         </div>
+    </section>
 
-        <!-- ফুটার সেভ বাটন -->
-        <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center px-6 rounded-b-2xl">
-            <p class="text-xs text-slate-500 italic"><i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> সাধারণ টেক্সট পরিবর্তন করে নিচের বাটনে ক্লিক করলেই মূল সাইট আপডেট হবে।</p>
-            <button onclick="updateEntireWebsite()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-emerald-500/20 flex items-center space-x-2">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>ওয়েবসাইট আপডেট করুন</span>
-            </button>
+    <section id="courses" class="py-20 bg-slate-900/40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-extrabold text-white tracking-tight sm:text-4xl mb-4">
+                    আমাদের এক্সক্লুসিভ কোর্স সমূহ
+                </h2>
+                <p class="text-slate-400 text-sm sm:text-base">নিচের প্রতিটি সাবজেক্টের ওপর রয়েছে পূর্ণাঙ্গ সিলেবাস ভিত্তিক লাইভ ক্লাস, লেকচার শিট ও অধ্যায়ভিত্তিক মক টেস্ট।</p>
+                <div class="h-1 w-20 bg-indigo-500 mx-auto rounded mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <div class="bg-slate-900 border border-slate-800 hover:border-blue-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 group-hover:bg-blue-600 group-hover:text-white text-blue-400 transition-colors">
+                                <i class="fa-solid fa-calculator text-xl"></i>
+                            </div>
+                            <button onclick="playDemoVideo('General Math')" class="text-xs font-semibold bg-slate-950 border border-slate-800 hover:border-blue-500 px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-slate-300 transition">
+                                <i class="fa-regular fa-circle-play text-blue-400"></i>
+                                <span>ডেমো ক্লাস</span>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">General Math (সাধারণ গণিত)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">বীজগণিত, জ্যামিতি, ত্রিকোণমিতি ও পরিমিতির প্রতিটি অধ্যায়ের বেসিক থেকে অ্যাডভান্সড শর্টকাট সমাধান সেশন।</p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-blue-500 mr-2"></i> ৪০+ লাইভ ইন্টারঅ্যাক্টিভ ক্লাস</div>
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-blue-500 mr-2"></i> অধ্যায়ভিত্তিক পূর্ণাঙ্গ PDF লেকচার শিট</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-wider">কোর্স ফি</span>
+                            <span class="text-xl font-black text-white">৳ ১২০০ <span class="text-xs text-slate-400 font-normal">/ এককালীন</span></span>
+                        </div>
+                        <button onclick="openPaymentFlow('General Math', 1200)" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md transition-all">কোর্স কিনুন</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center border border-indigo-500/20 group-hover:bg-indigo-600 group-hover:text-white text-indigo-400 transition-colors">
+                                <i class="fa-solid fa-compass-drafting text-xl"></i>
+                            </div>
+                            <button onclick="playDemoVideo('Higher Math')" class="text-xs font-semibold bg-slate-950 border border-slate-800 hover:border-indigo-500 px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-slate-300 transition">
+                                <i class="fa-regular fa-circle-play text-indigo-400"></i>
+                                <span>ডেমো ক্লাস</span>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Higher Math (উচ্চতর গণিত)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">স্থানাঙ্ক জ্যামিতি, ভেক্টর, অসীম ধারা ও সম্ভাবনা জটিল টপিকগুলোর গভীর ধারণা ও স্পেশাল ইঞ্জিনিয়ারিং ট্রিকস।</p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-indigo-500 mr-2"></i> ৫০+ মেগা লাইভ ক্লাস সেশন</div>
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-indigo-500 mr-2"></i> সাপ্তাহিক রিভিশন ও প্র্যাকটিস শিট</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-wider">কোর্স ফি</span>
+                            <span class="text-xl font-black text-white">৳ ১৫০০ <span class="text-xs text-slate-400 font-normal">/ এককালীন</span></span>
+                        </div>
+                        <button onclick="openPaymentFlow('Higher Math', 1500)" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md transition-all">কোর্স কিনুন</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-purple-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:bg-purple-600 group-hover:text-white text-purple-400 transition-colors">
+                                <i class="fa-solid fa-atom text-xl"></i>
+                            </div>
+                            <button onclick="playDemoVideo('Physics')" class="text-xs font-semibold bg-slate-950 border border-slate-800 hover:border-purple-500 px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-slate-300 transition">
+                                <i class="fa-regular fa-circle-play text-purple-400"></i>
+                                <span>ডেমো ক্লাস</span>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Physics (পদার্থবিজ্ঞান)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">গতি, বল, কাজ-ক্ষমতা-শক্তি থেকে শুরু করে চলতড়িৎ ও আধুনিক পদার্থবিজ্ঞানের জটিল ম্যাথমেটিকাল প্রবলেম সলভিং।</p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-purple-500 mr-2"></i> ৪৫+ সৃজনশীল ও গাণিতিক ক্লাস</div>
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-purple-500 mr-2"></i> বিগত ১০ বছরের টেস্ট পেপার সলভ</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-wider">কোর্স ফি</span>
+                            <span class="text-xl font-black text-white">৳ ১৪০০ <span class="text-xs text-slate-400 font-normal">/ এককালীন</span></span>
+                        </div>
+                        <button onclick="openPaymentFlow('Physics', 1400)" class="bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md transition-all">কোর্স কিনুন</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:bg-emerald-600 group-hover:text-white text-emerald-400 transition-colors">
+                                <i class="fa-solid fa-flask-vial text-xl"></i>
+                            </div>
+                            <button onclick="playDemoVideo('Chemistry')" class="text-xs font-semibold bg-slate-950 border border-slate-800 hover:border-emerald-500 px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-slate-300 transition">
+                                <i class="fa-regular fa-circle-play text-emerald-400"></i>
+                                <span>ডেমো ক্লাস</span>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Chemistry (রসায়ন)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">পর্যায় সারণি, রাসায়নিক বন্ধন ও জৈব যৌগের জটিল বিক্রিয়াগুলো অতি সহজে ও ছন্দের মাধ্যমে আয়ত্ত করার মাস্টারক্লাস।</p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-emerald-500 mr-2"></i> ৩৫+ বিক্রিয়া ভিত্তিক বিশেষ সেশন</div>
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-emerald-500 mr-2"></i> হ্যান্ডনোট ও স্মার্ট কুয়িজ সাপোর্ট</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-wider">কোর্স ফি</span>
+                            <span class="text-xl font-black text-white">৳ ১২০০ <span class="text-xs text-slate-400 font-normal">/ এককালীন</span></span>
+                        </div>
+                        <button onclick="openPaymentFlow('Chemistry', 1200)" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md transition-all">কোর্স কিনুন</button>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 shadow-xl flex flex-col justify-between group">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center border border-amber-500/20 group-hover:bg-amber-600 group-hover:text-white text-amber-400 transition-colors">
+                                <i class="fa-solid fa-network-wired text-xl"></i>
+                            </div>
+                            <button onclick="playDemoVideo('ICT')" class="text-xs font-semibold bg-slate-950 border border-slate-800 hover:border-amber-500 px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-slate-300 transition">
+                                <i class="fa-regular fa-circle-play text-amber-400"></i>
+                                <span>ডেমো ক্লাস</span>
+                            </button>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">ICT (তথ্য ও যোগাযোগ প্রযুক্তি)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed mb-4">সংখ্যা পদ্ধতি, ডিজিটাল ডিভাইস, HTML ও সি-প্রোগ্রামিং এর বাস্তবসম্মত কোডিং প্র্যাকটিস ক্লাস রুম এনভায়রনমেন্ট।</p>
+                        <div class="space-y-2 mb-6">
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-amber-500 mr-2"></i> ৩০+ হাই-টেক থিওরি ও ল্যাব ক্লাস</div>
+                            <div class="flex items-center text-xs text-slate-400"><i class="fa-solid fa-check text-amber-500 mr-2"></i> প্রোগ্রামিং স্পেশাল লাইভ ডাউট সল্ভিং</div>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="block text-[10px] uppercase text-slate-500 font-bold tracking-wider">কোর্স ফি</span>
+                            <span class="text-xl font-black text-white">৳ ১০০০ <span class="text-xs text-slate-400 font-normal">/ এককালীন</span></span>
+                        </div>
+                        <button onclick="openPaymentFlow('ICT', 1000)" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-md transition-all">কোর্স কিনুন</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-12 bg-slate-950 border-t border-slate-900 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h3 class="text-xl font-bold text-white mb-2">কেন পোদ্দারস ম্যাথ কেয়ার সেরা?</h3>
+            <p class="text-sm text-slate-400 max-w-2xl mx-auto">আমরা শুধুমাত্র মুখস্থ বিদ্যায় বিশ্বাসী নই। আমাদের মূল লক্ষ্য হল শিক্ষার্থীদের প্রতিটি জটিল গাণিতিক সমস্যার পেছনের লজিককে সহজভাবে ফিল করানো।</p>
+        </div>
+    </section>
+
+    <div id="dashboardModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-300">
+            <div class="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+                <h3 class="text-lg font-bold text-white flex items-center">
+                    <i class="fa-solid fa-user-shield text-blue-500 mr-2.5"></i> স্টুডেন্ট ড্যাশবোর্ড পোর্টাল
+                </h3>
+                <button onclick="toggleDashboardModal()" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-slate-700">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('সফলভাবে লগইন করা হয়েছে!'); toggleDashboardModal();" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">স্টুডেন্ট আইডি / মোবাইল নম্বর</label>
+                    <input type="text" placeholder="e.g., 01712345678" required class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">পাসওয়ার্ড</label>
+                    <input type="password" placeholder="••••••••" required class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none transition">
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <label class="flex items-center space-x-2 text-slate-400 cursor-pointer">
+                        <input type="checkbox" class="rounded bg-slate-950 border-slate-800 text-blue-500 focus:ring-0">
+                        <span>মনে রাখুন</span>
+                    </label>
+                    <a href="#" class="text-blue-400 hover:underline">পাসওয়ার্ড ভুলে গেছেন?</a>
+                </div>
+                <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/10">প্রবেশ করুন</button>
+                <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-800/60">
+                    নতুন অ্যাকাউন্ট তৈরি করতে চান? <a href="#" class="text-indigo-400 font-semibold hover:underline">রেজিস্ট্রেশন করুন</a>
+                </div>
+            </form>
         </div>
     </div>
+
+    <div id="paymentModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+            <div class="p-5 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
+                <div>
+                    <h3 class="text-base font-bold text-white">অনলাইন পেমেন্ট গেটওয়ে</h3>
+                    <p class="text-xs text-slate-400 mt-0.5">কোর্স এনরোলমেন্ট কনফার্মেশন</p>
+                </div>
+                <button onclick="closePaymentFlow()" class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6">
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex justify-between items-center">
+                    <div>
+                        <span class="text-xs text-blue-400 font-medium">নির্বাচিত বিষয়:</span>
+                        <h4 id="selectedCourseTitle" class="font-bold text-lg text-white">Subject Name</h4>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400 block">মোট প্রদেয় বিল:</span>
+                        <span id="selectedCoursePrice" class="font-black text-xl text-emerald-400">৳ 0.00</span>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="block text-xs font-semibold text-slate-400 mb-3">স্টেপ ১: আপনার পছন্দের পেমেন্ট মাধ্যম সিলেক্ট করুন</span>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="selectPaymentMethod('bKash')" class="payment-method-btn border-2 border-slate-800 hover:border-pink-500 rounded-xl p-3 bg-slate-950 flex flex-col items-center justify-center gap-1.5 transition group">
+                            <div class="w-10 h-10 bg-pink-600/10 rounded-lg flex items-center justify-center text-pink-500 font-extrabold text-sm group-hover:scale-105 transition-transform">bKash</div>
+                            <span class="text-xs font-medium text-slate-400">বিকাশ</span>
+                        </button>
+                        <button onclick="selectPaymentMethod('Nagad')" class="payment-method-btn border-2 border-slate-800 hover:border-orange-500 rounded-xl p-3 bg-slate-950 flex flex-col items-center justify-center gap-1.5 transition group">
+                            <div class="w-10 h-10 bg-orange-600/10 rounded-lg flex items-center justify-center text-orange-500 font-extrabold text-sm group-hover:scale-105 transition-transform">Nagad</div>
+                            <span class="text-xs font-medium text-slate-400">নগদ</span>
+                        </button>
+                        <button onclick="selectPaymentMethod('Rocket')" class="payment-method-btn border-2 border-slate-800 hover:border-purple-500 rounded-xl p-3 bg-slate-950 flex flex-col items-center justify-center gap-1.5 transition group">
+                            <div class="w-10 h-10 bg-purple-600/10 rounded-lg flex items-center justify-center text-purple-500 font-extrabold text-sm group-hover:scale-105 transition-transform">Rocket</div>
+                            <span class="text-xs font-medium text-slate-400">রকেট</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="paymentTxnContainer" class="hidden space-y-3 pt-2 border-t border-slate-800/50">
+                    <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-xs text-slate-400">
+                        <i class="fa-solid fa-circle-info text-blue-400 mr-1"></i> আমাদের মার্চেন্ট নাম্বারে উক্ত টাকা সেন্ড মানি (Send Money) করে নিচের বক্সে আপনার ট্রানজেকশন আইডি (TxID) প্রদান করুন।
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1.5" id="txnLabel">Transaction ID (TxID)</label>
+                        <input type="text" placeholder="e.g., 8N7X9W2Z" id="txnIdInput" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-4 py-3 text-sm text-white uppercase placeholder-slate-700 focus:outline-none transition">
+                    </div>
+                    <button onclick="submitPayment()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-emerald-500/10">ভর্তি নিশ্চিত করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://wa.me/8801558978375?text=Hello,%20I%20want%20to%20join%20the%20course" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-400 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all duration-300 hover:scale-110 group" title="Instant Live Chat Queries">
+        <i class="fa-brands fa-whatsapp text-2xl group-hover:rotate-12 transition-transform"></i>
+        <span class="absolute right-16 bg-slate-950 text-white border border-slate-800 text-xs px-2.5 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none shadow-md">যেকোনো প্রশ্ন থাকলে চ্যাট করুন</span>
+    </a>
+
+
+    <footer id="contact" class="bg-slate-950 border-t border-slate-900 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
+                <div>
+                    <span class="text-lg font-extrabold tracking-tight bg-gradient-to-r from-white to-blue-400 bg-clip-text text-transparent">
+                        Podder's MATH CARE
+                    </span>
+                    <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                        প্রতিনিয়ত শিক্ষার মানোন্নয়ন ও শিক্ষার্থীদের এক্সিলেন্স অর্জনে প্রতিজ্ঞাবদ্ধ একটি আধুনিক ডিজিটাল লার্নিং প্ল্যাটফর্ম।
+                    </p>
+                </div>
+                <div class="flex justify-center space-x-4">
+                    <a href="https://www.facebook.com/profile.php?id=61582864376849" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-blue-500 hover:border-blue-500/50 flex items-center justify-center transition">
+                        <i class="fa-brands fa-facebook-f text-base"></i>
+                    </a>
+                    <a href="https://youtube.com" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-red-500 hover:border-red-500/50 flex items-center justify-center transition">
+                        <i class="fa-brands fa-youtube text-base"></i>
+                    </a>
+                    <a href="mailto:info@poddersmathcare.com" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-500 hover:border-amber-500/50 flex items-center justify-center transition">
+                        <i class="fa-solid fa-envelope text-base"></i>
+                    </a>
+                </div>
+                <div class="text-center md:text-right text-xs text-slate-400 space-y-1">
+                    <div>হটলাইন: +880 1558978375 </div>
+                    <div>লোকেশন: মোহাম্মদপুর, খুলনা, বাংলাদেশ</div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 my-8"></div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-xs text-slate-500">
+                    &copy; 2026 Podder's MATH CARE. All Rights Reserved.
+                </p>
+                <div class="text-xs text-slate-500 italic tracking-wide">
+                    Developed by <span class="text-slate-400 font-semibold not-italic hover:text-blue-400 transition cursor-pointer">MD Rubayet Hasan</span>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        // === কনফিগারেশন সেটিংস ===
-        const LOGIN_USER = "admin";       
-        const LOGIN_PASS = "mathcare2026"; 
-        const GITHUB_USER = "rubayet-hasan";       
-        const GITHUB_REPO = "Podder-s-MATH-CARE";  
-        const FILE_NAME = "index.html";            
-
-        // 🛑 আপনার গিটহাব থেকে পাওয়া নতুন সোজা টোকেনটি এখানে বসান
-        const GITHUB_TOKEN = "YOUR_NEW_GITHUB_TOKEN_HERE";
-
-        let currentFileSha = ""; 
-        let rawHtmlContent = "";
-
-        // উইন্ডো লোড হওয়ার সাথে সাথে লগইন সেশন চেক হবে
-        window.onload = function() {
-            if (localStorage.getItem("adminLoggedIn") === "true") {
-                showDashboard();
+        // Toggle Functionality for Dashboard Login Modal
+        function toggleDashboardModal() {
+            const modal = document.getElementById('dashboardModal');
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
             } else {
-                document.getElementById('loginScreen').classList.remove('hidden');
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
             }
         }
 
-        function checkAdminLogin() {
-            const userIn = document.getElementById('adminUser').value.trim();
-            const passIn = document.getElementById('adminPass').value.trim();
-
-            if(userIn === LOGIN_USER && passIn === LOGIN_PASS) {
-                localStorage.setItem("adminLoggedIn", "true"); // লগইন সেশন ব্রাউজারে সেভ
-                showDashboard();
-            } else {
-                alert("ভুল ইউজার আইডি অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
-            }
+        // Play/Trigger Mock Handler for Course Demo Videos
+        function playDemoVideo(subjectName) {
+            alert(`"${subjectName}" বিষয়ের ফ্রি ডেমো ও ওরিয়েন্টেশন ক্লাস প্লেয়ারটি শীঘ্রই শুরু হচ্ছে! নতুন উইন্ডোতে লোড হচ্ছে...`);
         }
 
-        function showDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('adminDashboard').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('flex');
-            fetchCurrentSiteData();
+        // Payment Gateway Simulation Core Variables & Handlers
+        let selectedCourseNameGlobal = "";
+        
+        function openPaymentFlow(courseName, coursePrice) {
+            selectedCourseNameGlobal = courseName;
+            document.getElementById('selectedCourseTitle').innerText = `${courseName} ক্র্যাশ কোর্স`;
+            document.getElementById('selectedCoursePrice').innerText = `৳ ${coursePrice}`;
+            
+            // Show Modal Canvas
+            const payModal = document.getElementById('paymentModal');
+            payModal.classList.remove('hidden');
+            payModal.classList.add('flex');
+            
+            // Reset state inner selections
+            document.getElementById('paymentTxnContainer').classList.add('hidden');
+            document.querySelectorAll('.payment-method-btn').forEach(btn => btn.classList.remove('border-emerald-500', 'border-pink-500', 'border-orange-500', 'border-purple-500'));
+            document.getElementById('txnIdInput').value = "";
         }
 
-        function adminLogout() {
-            localStorage.removeItem("adminLoggedIn"); // সেশন ডিলিট
-            document.getElementById('adminPass').value = "";
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
+        function selectPaymentMethod(methodName) {
+            // Highlight step visually
+            const container = document.getElementById('paymentTxnContainer');
+            container.classList.remove('hidden');
+            
+            // Reset active outlines
+            document.querySelectorAll('.payment-method-btn').forEach(btn => {
+                btn.classList.remove('border-emerald-500');
+            });
+            
+            // Focus step input field labeled contextual details
+            document.getElementById('txnLabel').innerText = `${methodName} ট্রানজেকশন আইডি (TxID)`;
+            document.getElementById('txnIdInput').focus();
         }
 
-        // গিটহাব থেকে মেইন সাইটের ডেটা রিড করে ইনপুট বক্সে সাজানো
-        async function fetchCurrentSiteData() {
-            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
-            try {
-                const response = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
-                if(!response.ok) throw new Error("ডেটা লোড ব্যর্থ! আপনার গিটহাব টোকেন বা পারমিশন চেক করুন।");
-                
-                const data = await response.json();
-                currentFileSha = data.sha; 
-                rawHtmlContent = decodeURIComponent(escape(atob(data.content)));
-
-                // ভার্চুয়াল ডম পার্সার তৈরি করে ডেটা রিড করা
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(rawHtmlContent, 'text/html');
-
-                // নোটিশগুলো খুঁজে বের করা এবং ইনপুট বক্সে বসানো
-                const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
-                if(noticeBlocks.length >= 3) {
-                    document.getElementById('notice1_title').value = noticeBlocks[0].querySelector('h4').innerText;
-                    document.getElementById('notice1_desc').value = noticeBlocks[0].querySelector('p').innerText;
-                    document.getElementById('notice2_title').value = noticeBlocks[1].querySelector('h4').innerText;
-                    document.getElementById('notice2_desc').value = noticeBlocks[1].querySelector('p').innerText;
-                    document.getElementById('notice3_title').value = noticeBlocks[2].querySelector('h4').innerText;
-                    document.getElementById('notice3_desc').value = noticeBlocks[2].querySelector('p').innerText;
-                }
-
-                // রুটিনের ডেটাগুলো খুঁজে বক্সে বসানো
-                const rows = doc.querySelectorAll('#routine table tbody tr');
-                if(rows.length >= 5) {
-                    document.getElementById('rout_sat_sub').value = rows[0].cells[1].innerText;
-                    document.getElementById('rout_sat_time').value = rows[0].cells[3].innerText;
-
-                    document.getElementById('rout_sun_sub').value = rows[1].cells[1].innerText;
-                    document.getElementById('rout_sun_time').value = rows[1].cells[3].innerText;
-
-                    document.getElementById('rout_mon_sub').value = rows[2].cells[1].innerText;
-                    document.getElementById('rout_mon_time').value = rows[2].cells[3].innerText;
-
-                    document.getElementById('rout_tue_sub').value = rows[3].cells[1].innerText;
-                    document.getElementById('rout_tue_time').value = rows[3].cells[3].innerText;
-
-                    document.getElementById('rout_wed_sub').value = rows[4].cells[1].innerText;
-                    document.getElementById('rout_wed_time').value = rows[4].cells[3].innerText;
-                }
-
-            } catch (err) {
-                alert("ত্রুটি: " + err.message);
-            }
-        }
-
-        // ইনপুট বক্সের সাধারণ টেক্সট মেইন এইচটিএমএল ফাইলে রিপ্লেস করে সেভ করা
-        async function updateEntireWebsite() {
-            if(!rawHtmlContent || !currentFileSha) {
-                alert("মেইন ফাইল এখনো লোড হয়নি!");
+        function submitPayment() {
+            const txid = document.getElementById('txnIdInput').value.trim();
+            if(!txid) {
+                alert("দয়া করে সঠিক ট্রানজেকশন আইডি সাবমিট করুন!");
                 return;
             }
-
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(rawHtmlContent, 'text/html');
-
-            // নোটিশ আপডেট লজিক
-            const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
-            if(noticeBlocks.length >= 3) {
-                noticeBlocks[0].querySelector('h4').innerText = document.getElementById('notice1_title').value;
-                noticeBlocks[0].querySelector('p').innerText = document.getElementById('notice1_desc').value;
-                noticeBlocks[1].querySelector('h4').innerText = document.getElementById('notice2_title').value;
-                noticeBlocks[1].querySelector('p').innerText = document.getElementById('notice2_desc').value;
-                noticeBlocks[2].querySelector('h4').innerText = document.getElementById('notice3_title').value;
-                noticeBlocks[2].querySelector('p').innerText = document.getElementById('notice3_desc').value;
-            }
-
-            // রুটিন আপডেট লজিক
-            const rows = doc.querySelectorAll('#routine table tbody tr');
-            if(rows.length >= 5) {
-                rows[0].cells[1].innerText = document.getElementById('rout_sat_sub').value;
-                rows[0].cells[3].innerText = document.getElementById('rout_sat_time').value;
-
-                rows[1].cells[1].innerText = document.getElementById('rout_sun_sub').value;
-                rows[1].cells[3].innerText = document.getElementById('rout_sun_time').value;
-
-                rows[2].cells[1].innerText = document.getElementById('rout_mon_sub').value;
-                rows[2].cells[3].innerText = document.getElementById('rout_mon_time').value;
-
-                rows[3].cells[1].innerText = document.getElementById('rout_tue_sub').value;
-                rows[3].cells[3].innerText = document.getElementById('rout_tue_time').value;
-
-                rows[4].cells[1].innerText = document.getElementById('rout_wed_sub').value;
-                rows[4].cells[3].innerText = document.getElementById('rout_wed_time').value;
-            }
-
-            const updatedHtml = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
-            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
-            const encodedCode = btoa(unescape(encodeURIComponent(updatedHtml)));
-
-            const requestBody = {
-                message: "Website Content updated via Visual Master Admin Panel",
-                content: encodedCode,
-                sha: currentFileSha
-            };
-
-            try {
-                const response = await fetch(url, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(requestBody)
-                });
-
-                if(response.ok) {
-                    alert("সফলভাবে সম্পূর্ণ ওয়েবসাইট আপডেট করা হয়েছে! ১-২ মিনিটের মধ্যে পরিবর্তন লাইভ হয়ে যাবে।");
-                    fetchCurrentSiteData();
-                } else {
-                    const errData = await response.json();
-                    alert("আপডেট ব্যর্থ হয়েছে: " + errData.message);
-                }
-            } catch (err) {
-                alert("নেটওয়ার্ক এরর: " + err.message);
-            }
+            alert(`আপনার সাবমিটকৃত ট্রানজেকশন আইডি (${txid.toUpperCase()}) যাচাইকরণাধীন রয়েছে। ভেরিফিকেশন সফল হলে আগামী ৩০ মিনিটের মধ্যে আপনার"${selectedCourseNameGlobal}" কোর্সটি অ্যাক্টিভেট হয়ে যাবে! ধন্যবাদ।`);
+            closePaymentFlow();
         }
+
+        function closePaymentFlow() {
+            const payModal = document.getElementById('paymentModal');
+            payModal.classList.remove('flex');
+            payModal.classList.add('hidden');
+        }
+
+        // Global key event listeners to seamlessly dismiss overlays
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.getElementById('dashboardModal').classList.add('hidden');
+                document.getElementById('paymentModal').classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
