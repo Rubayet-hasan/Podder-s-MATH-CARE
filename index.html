@@ -53,6 +53,7 @@
             </nav>
 
 
+
     <section id="home" class="relative min-h-[85vh] flex items-center bg-cover bg-center overflow-hidden" style="background-image: url('image_c7f0e9.jpg');">
         <div class="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-900/80 to-slate-950 backdrop-blur-sm"></div>
 
@@ -394,8 +395,7 @@
         </div>
     </section>
 
-
-    
+ 
     <div id="paymentModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
             <div class="p-5 border-b border-slate-800 bg-slate-950 flex justify-between items-center">
@@ -500,23 +500,7 @@
     </footer>
 
     <script>
-
-// ফর্ম সাবমিট হ্যান্ডলার (Firebase বা ব্যাকএন্ড এপিআই এখানে যুক্ত হবে)
-document.getElementById('authForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const name = document.getElementById('authName').value;
-    const email = document.getElementById('authEmail').value;
-    const password = document.getElementById('authPassword').value;
-
-    if (isSignUpMode) {
-        // এখানে সাইন-আপের কোড কাজ করবে
-        alert(`রেজিস্ট্রেশন সফল হয়েছে!\nনাম: ${name}\nইমেইল: ${email}`);
-    } else {
-        // এখানে লগইনের কোড কাজ করবে
-        alert(`সফলভাবে লগইন হয়েছে!\nইমেইল: ${email}`);
-    }
-    toggleDashboardModal();
-});
+  
         // Play/Trigger Mock Handler for Course Demo Videos
         function playDemoVideo(subjectName) {
             alert(`"${subjectName}" বিষয়ের ফ্রি ডেমো ও ওরিয়েন্টেশন ক্লাস প্লেয়ারটি শীঘ্রই শুরু হচ্ছে! নতুন উইন্ডোতে লোড হচ্ছে...`);
@@ -572,13 +556,7 @@ document.getElementById('authForm').addEventListener('submit', function(e) {
             payModal.classList.add('hidden');
         }
 
-        // Global key event listeners to seamlessly dismiss overlays
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                document.getElementById('dashboardModal').classList.add('hidden');
-                document.getElementById('paymentModal').classList.add('hidden');
-            }
-        });
+      
     </script>
 </body>
 </html>
