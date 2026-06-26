@@ -1,292 +1,519 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Care - Reverse Token Visual Panel</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>মাস্টার অ্যাডমিন প্যানেল - Podder's Math Care</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'sans-serif'],
+                    },
+                    colors: {
+                        darkBg: '#0b1329',
+                        panelBg: '#1c2541',
+                        accentEmerald: '#10b981',
+                        accentSky: '#0ea5e9',
+                        accentIndigo: '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #0b1329; }
+        /* Custom Glowing & Glassmorphism Effects */
+        .glass-card {
+            background: rgba(28, 37, 65, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow-emerald:focus {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+        .neon-glow-sky:focus {
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.4);
+        }
+        .neon-glow-indigo:focus {
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1329;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1c2541;
+            border-radius: 10px;
+        }
     </style>
 </head>
-<body class="text-slate-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-darkBg text-slate-100 font-sans min-h-screen antialiased flex flex-col justify-between">
 
-    <div id="loginScreen" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center shadow-2xl hidden">
-        <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-500/20">
-            <i class="fa-solid fa-user-shield text-3xl text-white"></i>
-        </div>
-        <h2 class="text-2xl font-bold text-white mb-6">মাস্টার ভিজ্যুয়াল অ্যাডমিন</h2>
-        
-        <div class="space-y-4 text-left">
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">ইউজার আইডি (Username)</label>
-                <input type="text" id="adminUser" value="admin" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
+    <div id="loginScreen" class="fixed inset-0 z-50 flex items-center justify-center bg-darkBg/95 backdrop-blur-md px-4 transition-opacity duration-300">
+        <div class="glass-card w-full max-w-md rounded-2xl p-8 shadow-2xl border border-slate-700/50 relative overflow-hidden">
+            <div class="absolute -top-10 -left-10 w-32 h-32 bg-accentIndigo/10 rounded-full blur-xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-accentEmerald/10 rounded-full blur-xl"></div>
+            
+            <div class="text-center mb-8 relative z-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 border border-slate-700 text-accentIndigo text-2xl mb-4 shadow-lg shadow-accentIndigo/20">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h2 class="text-2xl font-bold tracking-wide">মাস্টার অ্যাডমিন লগইন</h2>
+                <p class="text-xs text-slate-400 mt-1">ওয়েবসাইট নিয়ন্ত্রণের জন্য পরিচয় যাচাই করুন</p>
             </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 mb-1.5">সিক্রেট পাসওয়ার্ড</label>
-                <input type="password" id="adminPass" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none transition">
-            </div>
-            <button onclick="checkAdminLogin()" class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm rounded-xl transition shadow-lg shadow-blue-500/10 mt-2">
-                ড্যাশবোর্ডে প্রবেশ করুন
-            </button>
+
+            <form id="loginForm" class="space-y-5 relative z-10">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">ব্যবহারকারীর নাম</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-user text-sm"></i>
+                        </span>
+                        <input type="text" id="username" required class="w-full bg-slate-900/80 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo transition duration-200 neon-glow-indigo" placeholder="ইউজারনেম লিখুন">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">পাসওয়ার্ড</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500">
+                            <i class="fa-solid fa-lock text-sm"></i>
+                        </span>
+                        <input type="password" id="password" required class="w-full bg-slate-900/80 border border-slate-700 rounded-xl py-3 pl-10 pr-4 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo transition duration-200 neon-glow-indigo" placeholder="••••••••">
+                    </div>
+                </div>
+                <div id="loginError" class="text-rose-500 text-xs hidden flex items-center gap-1.5 bg-rose-500/10 p-2.5 rounded-lg border border-rose-500/20">
+                    <i class="fa-solid fa-circle-exclamation"></i> ভুল ইউজারনেম অথবা পাসওয়ার্ড!
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-accentIndigo to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-indigo-500/20 active:scale-[0.99] transition-all duration-150 text-sm">
+                    প্যানেলে প্রবেশ করুন <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </form>
         </div>
     </div>
 
-    <div id="adminDashboard" class="w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl hidden flex-col">
-        <div class="bg-slate-950 px-6 py-4 border-b border-slate-800 flex justify-between items-center rounded-t-2xl">
-            <div class="flex items-center space-x-3">
-                <i class="fa-solid fa-sliders text-blue-500 text-xl"></i>
-                <h3 class="text-base font-bold text-white">Website Visual Control Panel (Live Updates)</h3>
+    <div id="dashboardContainer" class="hidden flex-1 flex flex-col">
+        <header class="bg-panelBg/80 border-b border-slate-800 sticky top-0 z-40 backdrop-blur-md px-4 lg:px-8 py-4">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accentIndigo to-accentSky flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-sliders text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-slate-100">ওয়েবসাইট ভিজ্যুয়াল কন্ট্রোল প্যানেল</h1>
+                        <p class="text-xs text-slate-400">লাইভ ডাটা এডিটর ও গিটহাব সিঙ্ক মডিউল</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <button id="refreshBtn" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl py-2.5 px-4 text-sm font-medium active:scale-95 transition-all duration-150">
+                        <i id="syncIcon" class="fa-solid fa-rotate"></i> ডাটা রিফ্রেশ
+                    </button>
+                    <button id="logoutBtn" class="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-rose-950/40 hover:bg-rose-900/60 text-rose-400 border border-rose-900/50 rounded-xl py-2.5 px-4 text-sm font-medium active:scale-95 transition-all duration-150">
+                        <i class="fa-solid fa-power-off"></i> লগআউট
+                    </button>
+                </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <button onclick="fetchCurrentSiteData()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 px-4 py-2 rounded-xl text-xs font-semibold transition">
-                    <i class="fa-solid fa-rotate mr-1.5"></i> রিফ্রেশ ডেটা
-                </button>
-                <button onclick="adminLogout()" class="bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/20 px-4 py-2 rounded-xl text-xs font-semibold transition">
-                    <i class="fa-solid fa-power-off mr-1.5"></i> লগআউট
-                </button>
-            </div>
-        </div>
+        </header>
 
-        <div class="p-6 space-y-6 bg-slate-950 max-h-[70vh] overflow-y-auto">
+        <main class="max-w-7xl mx-auto w-full px-4 lg:px-8 py-8 space-y-10 flex-1">
             
-            <div id="loadingStatus" class="text-center py-4 text-amber-400 font-semibold text-sm">
-                <i class="fa-solid fa-spinner fa-spin mr-2"></i> গিটহাব থেকে লাইভ নোটিশ ও রুটিন লোড হচ্ছে... অনুগ্রহ করে অপেক্ষা করুন।
-            </div>
-
-            <div id="noticeSection" class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4 hidden">
-                <h4 class="text-sm font-bold text-blue-400 flex items-center"><i class="fa-solid fa-bullhorn mr-2"></i> নোটিশ বোর্ড পরিবর্তন করুন (বর্তমানে যা আছে তা নিচে দেখা যাচ্ছে)</h4>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-red-400 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> নোটিশ ১ (উপরের নোটিশ)</span>
-                        <input type="text" id="notice1_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-blue-500">
-                        <textarea id="notice1_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-24 resize-none focus:outline-none focus:border-blue-500"></textarea>
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
+                    <span class="w-2 h-6 bg-accentEmerald rounded-full"></span>
+                    <h2 class="text-lg font-bold text-slate-200">মডিউল ক: কোর্স ফি নির্ধারণী গ্রিড</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="glass-card rounded-xl p-5 border-l-4 border-l-accentEmerald flex flex-col justify-between group hover:border-slate-700 transition-all duration-200">
+                        <div>
+                            <span class="text-xs text-accentEmerald font-semibold bg-accentEmerald/10 px-2 py-0.5 rounded-md">আবশ্যিক</span>
+                            <h3 class="text-base font-bold mt-2 text-slate-300">General Math</h3>
+                        </div>
+                        <div class="mt-4 relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-accentEmerald font-bold">৳</span>
+                            <input type="number" id="price_general_math" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 pl-7 pr-3 text-sm text-slate-200 font-semibold focus:outline-none focus:border-accentEmerald neon-glow-emerald transition duration-200" placeholder="0">
+                        </div>
                     </div>
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-emerald-400 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> নোটিশ ২ (মাঝের নোটিশ)</span>
-                        <input type="text" id="notice2_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-blue-500">
-                        <textarea id="notice2_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-24 resize-none focus:outline-none focus:border-blue-500"></textarea>
+                    <div class="glass-card rounded-xl p-5 border-l-4 border-l-accentEmerald flex flex-col justify-between group hover:border-slate-700 transition-all duration-200">
+                        <div>
+                            <span class="text-xs text-accentEmerald font-semibold bg-accentEmerald/10 px-2 py-0.5 rounded-md">ঐচ্ছিক</span>
+                            <h3 class="text-base font-bold mt-2 text-slate-300">Higher Math</h3>
+                        </div>
+                        <div class="mt-4 relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-accentEmerald font-bold">৳</span>
+                            <input type="number" id="price_higher_math" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 pl-7 pr-3 text-sm text-slate-200 font-semibold focus:outline-none focus:border-accentEmerald neon-glow-emerald transition duration-200" placeholder="0">
+                        </div>
                     </div>
-                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                        <span class="text-xs text-amber-400 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i> নোটিশ ৩ (নিচের নোটিশ)</span>
-                        <input type="text" id="notice3_title" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-blue-500">
-                        <textarea id="notice3_desc" class="w-full bg-slate-900 border border-slate-800 rounded-lg p-2 text-xs text-slate-300 h-24 resize-none focus:outline-none focus:border-blue-500"></textarea>
+                    <div class="glass-card rounded-xl p-5 border-l-4 border-l-accentEmerald flex flex-col justify-between group hover:border-slate-700 transition-all duration-200">
+                        <div>
+                            <span class="text-xs text-accentEmerald font-semibold bg-accentEmerald/10 px-2 py-0.5 rounded-md">বিজ্ঞান</span>
+                            <h3 class="text-base font-bold mt-2 text-slate-300">Physics</h3>
+                        </div>
+                        <div class="mt-4 relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-accentEmerald font-bold">৳</span>
+                            <input type="number" id="price_physics" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 pl-7 pr-3 text-sm text-slate-200 font-semibold focus:outline-none focus:border-accentEmerald neon-glow-emerald transition duration-200" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-xl p-5 border-l-4 border-l-accentEmerald flex flex-col justify-between group hover:border-slate-700 transition-all duration-200">
+                        <div>
+                            <span class="text-xs text-accentEmerald font-semibold bg-accentEmerald/10 px-2 py-0.5 rounded-md">বিজ্ঞান</span>
+                            <h3 class="text-base font-bold mt-2 text-slate-300">Chemistry</h3>
+                        </div>
+                        <div class="mt-4 relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-accentEmerald font-bold">৳</span>
+                            <input type="number" id="price_chemistry" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 pl-7 pr-3 text-sm text-slate-200 font-semibold focus:outline-none focus:border-accentEmerald neon-glow-emerald transition duration-200" placeholder="0">
+                        </div>
+                    </div>
+                    <div class="glass-card rounded-xl p-5 border-l-4 border-l-accentEmerald flex flex-col justify-between group hover:border-slate-700 transition-all duration-200">
+                        <div>
+                            <span class="text-xs text-accentEmerald font-semibold bg-accentEmerald/10 px-2 py-0.5 rounded-md">আবশ্যিক</span>
+                            <h3 class="text-base font-bold mt-2 text-slate-300">ICT</h3>
+                        </div>
+                        <div class="mt-4 relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-accentEmerald font-bold">৳</span>
+                            <input type="number" id="price_ict" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 pl-7 pr-3 text-sm text-slate-200 font-semibold focus:outline-none focus:border-accentEmerald neon-glow-emerald transition duration-200" placeholder="0">
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="routineSection" class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4 hidden">
-                <h4 class="text-sm font-bold text-indigo-400 flex items-center"><i class="fa-solid fa-calendar-days mr-2"></i> সাপ্তাহিক ক্লাস রুটিন এডিট করুন</h4>
-                <div class="space-y-3">
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">শনিবার</span>
-                        <input type="text" id="rout_sat_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                        <input type="text" id="rout_sat_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
+                    <span class="w-2 h-6 bg-accentSky rounded-full"></span>
+                    <h2 class="text-lg font-bold text-slate-200">মডিউল খ: লাইভ নোটিশ বোর্ড কন্ট্রোল</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card rounded-xl p-5 border border-slate-800 space-y-4 relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+                            <span class="text-xs text-accentSky font-bold tracking-wider"><i class="fa-solid fa-thumbtack mr-1"></i> নোটিশ ০১</span>
+                        </div>
+                        <div class="space-y-3">
+                            <input type="text" id="notice_title_1" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 px-3 text-sm font-semibold text-slate-200 focus:outline-none focus:border-accentSky neon-glow-sky transition duration-200" placeholder="নোটিশের শিরোনাম">
+                            <textarea id="notice_desc_1" rows="3" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 px-3 text-xs text-slate-400 focus:outline-none focus:border-accentSky neon-glow-sky transition duration-200 resize-none" placeholder="নোটিশের বিস্তারিত বিবরণ লিখুন..."></textarea>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">রবিবার</span>
-                        <input type="text" id="rout_sun_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                        <input type="text" id="rout_sun_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
+                    <div class="glass-card rounded-xl p-5 border border-slate-800 space-y-4 relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+                            <span class="text-xs text-accentSky font-bold tracking-wider"><i class="fa-solid fa-thumbtack mr-1"></i> নোটিশ ০২</span>
+                        </div>
+                        <div class="space-y-3">
+                            <input type="text" id="notice_title_2" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 px-3 text-sm font-semibold text-slate-200 focus:outline-none focus:border-accentSky neon-glow-sky transition duration-200" placeholder="নোটিশের শিরোনাম">
+                            <textarea id="notice_desc_2" rows="3" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 px-3 text-xs text-slate-400 focus:outline-none focus:border-accentSky neon-glow-sky transition duration-200 resize-none" placeholder="নোটিশের বিস্তারিত বিবরণ লিখুন..."></textarea>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">সোমবার</span>
-                        <input type="text" id="rout_mon_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                        <input type="text" id="rout_mon_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2">মঙ্গলবার</span>
-                        <input type="text" id="rout_tue_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                        <input type="text" id="rout_tue_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 bg-slate-950 p-2.5 rounded-xl border border-slate-800 items-center">
-                        <span class="text-xs font-bold text-slate-300 px-2"> बुधवार</span>
-                        <input type="text" id="rout_wed_sub" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
-                        <input type="text" id="rout_wed_time" class="bg-slate-900 border border-slate-800 text-xs text-white rounded-lg p-2 focus:outline-none focus:border-indigo-500">
+                    <div class="glass-card rounded-xl p-5 border border-slate-800 space-y-4 relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-slate-800/60 pb-2">
+                            <span class="text-xs text-accentSky font-bold tracking-wider"><i class="fa-solid fa-thumbtack mr-1"></i> নোটিশ ০৩</span>
+                        </div>
+                        <div class="space-y-3">
+                            <input type="text" id="notice_title_3" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 px-3 text-sm font-semibold text-slate-200 focus:outline-none focus:border-accentSky neon-glow-sky transition duration-200" placeholder="নোটিশের শিরোনাম">
+                            <textarea id="notice_desc_3" rows="3" class="w-full bg-slate-900/60 border border-slate-800 rounded-lg py-2 px-3 text-xs text-slate-400 focus:outline-none focus:border-accentSky neon-glow-sky transition duration-200 resize-none" placeholder="নোটিশের বিস্তারিত বিবরণ লিখুন..."></textarea>
+                        </div>
                     </div>
                 </div>
+            </section>
+
+            <section class="space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-2">
+                    <span class="w-2 h-6 bg-accentIndigo rounded-full"></span>
+                    <h2 class="text-lg font-bold text-slate-200">মডিউল গ: সাপ্তাহিক ক্লাস রুটিন এডিটর (শনি - বুধ)</h2>
+                </div>
+                <div class="glass-card rounded-xl p-4 md:p-6 border border-slate-800 overflow-x-auto">
+                    <div class="min-w-[600px] space-y-4">
+                        <div class="grid grid-cols-12 gap-4 bg-slate-900/80 p-3 rounded-lg border border-slate-800 text-xs font-bold uppercase tracking-wider text-slate-400">
+                            <div class="col-span-3"><i class="fa-solid fa-calendar-day mr-1"></i> দিন</div>
+                            <div class="col-span-5"><i class="fa-solid fa-book-open mr-1"></i> বিষয়ের নাম</div>
+                            <div class="col-span-4"><i class="fa-solid fa-clock mr-1"></i> ক্লাসের সময়</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-12 gap-4 items-center p-2 border-b border-slate-800/40 last:border-0">
+                            <div class="col-span-3 font-semibold text-sm text-accentIndigo">শনিবার</div>
+                            <div class="col-span-5">
+                                <input type="text" id="routine_sub_sat" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: উচ্চতর গণিত">
+                            </div>
+                            <div class="col-span-4">
+                                <input type="text" id="routine_time_sat" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: ০৪:০০ PM">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center p-2 border-b border-slate-800/40 last:border-0">
+                            <div class="col-span-3 font-semibold text-sm text-accentIndigo">রবিবার</div>
+                            <div class="col-span-5">
+                                <input type="text" id="routine_sub_sun" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: পদার্থবিজ্ঞান">
+                            </div>
+                            <div class="col-span-4">
+                                <input type="text" id="routine_time_sun" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: ০৫:৩০ PM">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center p-2 border-b border-slate-800/40 last:border-0">
+                            <div class="col-span-3 font-semibold text-sm text-accentIndigo">সোমবার</div>
+                            <div class="col-span-5">
+                                <input type="text" id="routine_sub_mon" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: রসায়ন">
+                            </div>
+                            <div class="col-span-4">
+                                <input type="text" id="routine_time_mon" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: ০৪:০০ PM">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center p-2 border-b border-slate-800/40 last:border-0">
+                            <div class="col-span-3 font-semibold text-sm text-accentIndigo">মঙ্গলবার</div>
+                            <div class="col-span-5">
+                                <input type="text" id="routine_sub_tue" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: সাধারণ গণিত">
+                            </div>
+                            <div class="col-span-4">
+                                <input type="text" id="routine_time_tue" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: ০৬:০০ PM">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center p-2 border-b border-slate-800/40 last:border-0">
+                            <div class="col-span-3 font-semibold text-sm text-accentIndigo">বুধবার</div>
+                            <div class="col-span-5">
+                                <input type="text" id="routine_sub_wed" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: ICT">
+                            </div>
+                            <div class="col-span-4">
+                                <input type="text" id="routine_time_wed" class="w-full bg-slate-900/40 border border-slate-800 rounded-lg py-2 px-3 text-sm text-slate-200 focus:outline-none focus:border-accentIndigo neon-glow-indigo transition duration-200" placeholder="উদা: ০৩:৩০ PM">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-panelBg/90 border-t border-slate-800 px-4 lg:px-8 py-5 mt-auto sticky bottom-0 z-40 backdrop-blur-md">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2 text-slate-400 text-xs sm:text-sm">
+                    <span class="inline-block w-2.5 h-2.5 bg-accentEmerald rounded-full animate-pulse"></span>
+                    <span id="statusText">সব মডিউল সক্রিয় এবং প্রস্তুত।</span>
+                </div>
+                <button id="saveUpdateBtn" class="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-accentEmerald to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20 active:scale-[0.98] transition-all duration-150 text-sm">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> সেভ এবং ওয়েবসাইট আপডেট করুন
+                </button>
             </div>
-
-        </div>
-
-        <div class="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center px-6 rounded-b-2xl">
-            <p class="text-xs text-slate-500 italic"><i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> কোড ছাড়া নো-কোড ভিজ্যুয়াল এডিটিং সিস্টেম সচল আছে।</p>
-            <button id="saveBtn" onclick="updateEntireWebsite()" disabled class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 opacity-50 cursor-not-allowed text-white font-bold text-sm rounded-xl transition shadow-lg flex items-center space-x-2">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-                <span>ওয়েবসাইট আপডেট করুন</span>
-            </button>
-        </div>
+        </footer>
     </div>
 
     <script>
-        // === সেটিংস ===
-        const LOGIN_USER = "admin";       
-        const LOGIN_PASS = "mathcare2026"; 
-        const GITHUB_USER = "rubayet-hasan";       
-        const GITHUB_REPO = "Podder-s-MATH-CARE";  
-        const FILE_NAME = "index.html";            
-
-        // 🛑 আপানার নতুন GitHub Token-টি একদম উল্টো (Reverse) করে এখানে বসান। 
-        // উদাহরন: "ghp_12345" এর উল্টো "54321_phg" বসাবেন। GitHub bot এটি ডিলিট করতে পারবে না!
-        const REVERSED_TOKEN = "nRVTH2nA3hDDjP8oHCDWDzZuAfBfVavFzE3T_phg"; 
-
-        // Auto-Reversing the token back for API use
+        // GitHub Config Predefinitions
+        const GITHUB_USER = "rubayet-hasan";
+        const GITHUB_REPO = "Podder-s-MATH-CARE";
+        const FILE_NAME = "index.html";
+        
+        // Reverse Token Engine
+        const REVERSED_TOKEN = "OaKdG1FkBfdJmPLr6HwCzCARPKo23XWxaNo_phg";
         const GITHUB_TOKEN = REVERSED_TOKEN.split("").reverse().join("");
 
-        let currentFileSha = ""; 
-        let rawHtmlContent = "";
+        let fileSha = ""; // Track GitHub File SHA
 
-        window.onload = function() {
-            if (localStorage.getItem("adminLoggedIn") === "true") {
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const loginForm = document.getElementById('loginForm');
+        const loginError = document.getElementById('loginError');
+        const dashboardContainer = document.getElementById('dashboardContainer');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const syncIcon = document.getElementById('syncIcon');
+        const saveUpdateBtn = document.getElementById('saveUpdateBtn');
+        const statusText = document.getElementById('statusText');
+
+        // Check Local Storage Login Session
+        window.addEventListener('DOMContentLoaded', () => {
+            if(localStorage.getItem('mathcare_admin_logged') === 'true') {
+                showDashboard();
+            }
+        });
+
+        // Login Process
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+
+            if(user === "admin" && pass === "mathcare2026") {
+                localStorage.setItem('mathcare_admin_logged', 'true');
+                loginError.classList.add('hidden');
                 showDashboard();
             } else {
-                document.getElementById('loginScreen').classList.remove('hidden');
+                loginError.classList.remove('hidden');
             }
-        }
+        });
 
-        function checkAdminLogin() {
-            const userIn = document.getElementById('adminUser').value.trim();
-            const passIn = document.getElementById('adminPass').value.trim();
-
-            if(userIn === LOGIN_USER && passIn === LOGIN_PASS) {
-                localStorage.setItem("adminLoggedIn", "true");
-                showDashboard();
-            } else {
-                alert("ভুল ইউজার আইডি অথবা পাসওয়ার্ড! আবার চেষ্টা করুন।");
-            }
-        }
+        // Logout Process
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('mathcare_admin_logged');
+            dashboardContainer.classList.add('hidden');
+            loginScreen.classList.remove('hidden');
+            loginForm.reset();
+        });
 
         function showDashboard() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('adminDashboard').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('flex');
-            fetchCurrentSiteData();
+            loginScreen.classList.add('hidden');
+            dashboardContainer.classList.remove('hidden');
+            fetchDataFromGitHub();
         }
 
-        function adminLogout() {
-            localStorage.removeItem("adminLoggedIn");
-            document.getElementById('adminPass').value = "";
-            document.getElementById('loginScreen').classList.remove('hidden');
-            document.getElementById('adminDashboard').classList.add('hidden');
-        }
-
-        // Live text content automatic load hobar function
-        async function fetchCurrentSiteData() {
-            document.getElementById('loadingStatus').classList.remove('hidden');
-            document.getElementById('noticeSection').classList.add('hidden');
-            document.getElementById('routineSection').classList.add('hidden');
-            document.getElementById('saveBtn').disabled = true;
-            document.getElementById('saveBtn').classList.add('opacity-50', 'cursor-not-allowed');
-
+        // Fetch index.html from GitHub and parse data to UI
+        async function fetchDataFromGitHub() {
+            setLoadingState(true, "গিটহাব থেকে লাইভ ডাটা লোড হচ্ছে...");
             const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
-            try {
-                const response = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
-                if(!response.ok) throw new Error("গিটহাব টোকেন বা পারমিশন ভুল আছে!");
-                
-                const data = await response.json();
-                currentFileSha = data.sha; 
-                rawHtmlContent = decodeURIComponent(escape(atob(data.content)));
-
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(rawHtmlContent, 'text/html');
-
-                // Auto filling Notice fields with live text
-                const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
-                if(noticeBlocks.length >= 3) {
-                    document.getElementById('notice1_title').value = noticeBlocks[0].querySelector('h4').innerText.trim();
-                    document.getElementById('notice1_desc').value = noticeBlocks[0].querySelector('p').innerText.trim();
-                    document.getElementById('notice2_title').value = noticeBlocks[1].querySelector('h4').innerText.trim();
-                    document.getElementById('notice2_desc').value = noticeBlocks[1].querySelector('p').innerText.trim();
-                    document.getElementById('notice3_title').value = noticeBlocks[2].querySelector('h4').innerText.trim();
-                    document.getElementById('notice3_desc').value = noticeBlocks[2].querySelector('p').innerText.trim();
-                }
-
-                // Auto filling Routine fields with live text
-                const rows = doc.querySelectorAll('#routine table tbody tr');
-                if(rows.length >= 5) {
-                    document.getElementById('rout_sat_sub').value = rows[0].cells[1].innerText.trim();
-                    document.getElementById('rout_sat_time').value = rows[0].cells[3].innerText.trim();
-                    document.getElementById('rout_sun_sub').value = rows[1].cells[1].innerText.trim();
-                    document.getElementById('rout_sun_time').value = rows[1].cells[3].innerText.trim();
-                    document.getElementById('rout_mon_sub').value = rows[2].cells[1].innerText.trim();
-                    document.getElementById('rout_mon_time').value = rows[2].cells[3].innerText.trim();
-                    document.getElementById('rout_tue_sub').value = rows[3].cells[1].innerText.trim();
-                    document.getElementById('rout_tue_time').value = rows[3].cells[3].innerText.trim();
-                    document.getElementById('rout_wed_sub').value = rows[4].cells[1].innerText.trim();
-                    document.getElementById('rout_wed_time').value = rows[4].cells[3].innerText.trim();
-                }
-
-                document.getElementById('loadingStatus').classList.add('hidden');
-                document.getElementById('noticeSection').classList.remove('hidden');
-                document.getElementById('routineSection').classList.remove('hidden');
-                document.getElementById('saveBtn').disabled = false;
-                document.getElementById('saveBtn').classList.remove('opacity-50', 'cursor-not-allowed');
-
-            } catch (err) {
-                document.getElementById('loadingStatus').innerText = "ত্রুটি: ডেটা লোড করা যায়নি। টোকেন বা নেটওয়ার্ক চেক করুন।";
-                alert("Error loading content: " + err.message);
-            }
-        }
-
-        async function updateEntireWebsite() {
-            if(!rawHtmlContent || !currentFileSha) return;
-
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(rawHtmlContent, 'text/html');
-
-            // Injecting updated input data back to HTML
-            const noticeBlocks = doc.querySelectorAll('#routine .lg\\:col-span-5 .space-y-4 > div');
-            if(noticeBlocks.length >= 3) {
-                noticeBlocks[0].querySelector('h4').innerText = document.getElementById('notice1_title').value;
-                noticeBlocks[0].querySelector('p').innerText = document.getElementById('notice1_desc').value;
-                noticeBlocks[1].querySelector('h4').innerText = document.getElementById('notice2_title').value;
-                noticeBlocks[1].querySelector('p').innerText = document.getElementById('notice2_desc').value;
-                noticeBlocks[2].querySelector('h4').innerText = document.getElementById('notice3_title').value;
-                noticeBlocks[2].querySelector('p').innerText = document.getElementById('notice3_desc').value;
-            }
-
-            const rows = doc.querySelectorAll('#routine table tbody tr');
-            if(rows.length >= 5) {
-                rows[0].cells[1].innerText = document.getElementById('rout_sat_sub').value;
-                rows[0].cells[3].innerText = document.getElementById('rout_sat_time').value;
-                rows[1].cells[1].innerText = document.getElementById('rout_sun_sub').value;
-                rows[1].cells[3].innerText = document.getElementById('rout_sun_time').value;
-                rows[2].cells[1].innerText = document.getElementById('rout_mon_sub').value;
-                rows[2].cells[3].innerText = document.getElementById('rout_mon_time').value;
-                rows[3].cells[1].innerText = document.getElementById('rout_tue_sub').value;
-                rows[3].cells[3].innerText = document.getElementById('rout_tue_time').value;
-                rows[4].cells[1].innerText = document.getElementById('rout_wed_sub').value;
-                rows[4].cells[3].innerText = document.getElementById('rout_wed_time').value;
-            }
-
-            const updatedHtml = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML;
-            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
-            const encodedCode = btoa(unescape(encodeURIComponent(updatedHtml)));
-
-            const requestBody = {
-                message: "Content fully updated via Visual Token Reverse Admin Panel",
-                content: encodedCode,
-                sha: currentFileSha
-            };
-
+            
             try {
                 const response = await fetch(url, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-                    body: JSON.stringify(requestBody)
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                
+                if(!response.ok) throw new Error("ডাটা ফেচ করতে ব্যর্থ!");
+                
+                const data = await response.json();
+                fileSha = data.sha;
+                
+                // Decode Unicode Base64 perfectly
+                const rawHtml = decodeURIComponent(escape(atob(data.content.replace(/\s/g, ''))));
+                
+                // DOM Parsing Engine
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(rawHtml, 'text/html');
+                
+                mapHtmlToUi(doc);
+                setLoadingState(false, "লাইভ ডাটা সফলভাবে সিঙ্ক হয়েছে।");
+            } catch (error) {
+                console.error(error);
+                setLoadingState(false, "ত্রুটি: গিটহাব সংযোগে সমস্যা হয়েছে।", true);
+            }
+        }
+
+        // Extract Data from parsed DOM and set to Inputs
+        function mapHtmlToUi(doc) {
+            // Module A: Course Prices Mapping
+            const pGen = doc.getElementById('price-general-math');
+            const pHig = doc.getElementById('price-higher-math');
+            const pPhy = doc.getElementById('price-physics');
+            const pChe = doc.getElementById('price-chemistry');
+            const pIct = doc.getElementById('price-ict');
+
+            if(pGen) document.getElementById('price_general_math').value = pGen.innerText.replace(/[^0-9]/g, '');
+            if(pHig) document.getElementById('price_higher_math').value = pHig.innerText.replace(/[^0-9]/g, '');
+            if(pPhy) document.getElementById('price_physics').value = pPhy.innerText.replace(/[^0-9]/g, '');
+            if(pChe) document.getElementById('price_chemistry').value = pChe.innerText.replace(/[^0-9]/g, '');
+            if(pIct) document.getElementById('price_ict').value = pIct.innerText.replace(/[^0-9]/g, '');
+
+            // Module B: Live Notices Mapping
+            for(let i=1; i<=3; i++) {
+                const nTitle = doc.getElementById(`notice-title-${i}`);
+                const nDesc = doc.getElementById(`notice-desc-${i}`);
+                if(nTitle) document.getElementById(`notice_title_${i}`).value = nTitle.innerText.trim();
+                if(nDesc) document.getElementById(`notice_desc_${i}`).value = nDesc.innerText.trim();
+            }
+
+            // Module C: Routine Mapping
+            const days = ['sat', 'sun', 'mon', 'tue', 'wed'];
+            days.forEach(day => {
+                const subEl = doc.getElementById(`routine-sub-${day}`);
+                const timeEl = doc.getElementById(`routine-time-${day}`);
+                if(subEl) document.getElementById(`routine_sub_${day}`).value = subEl.innerText.trim();
+                if(timeEl) document.getElementById(`routine_time_${day}`).value = timeEl.innerText.trim();
+            });
+        }
+
+        // Refresh Data Trigger
+        refreshBtn.addEventListener('click', () => {
+            syncIcon.classList.add('fa-spin');
+            fetchDataFromGitHub();
+        });
+
+        // Collect UI Inputs, merge into current index.html DOM, and Update to GitHub
+        saveUpdateBtn.addEventListener('click', async () => {
+            setLoadingState(true, "ওয়েবসাইট আপডেট প্রসেস করা হচ্ছে...");
+            const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_NAME}`;
+            
+            try {
+                // First, fetch the latest file to make sure SHA is perfect and preserve outer HTML structures
+                const initialRes = await fetch(url, {
+                    headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+                });
+                if(!initialRes.ok) throw new Error("সর্বশেষ ফাইলের SHA রিড করা যায়নি।");
+                const initialData = await initialRes.json();
+                fileSha = initialData.sha;
+                const freshHtml = decodeURIComponent(escape(atob(initialData.content.replace(/\s/g, ''))));
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(freshHtml, 'text/html');
+
+                // Inject Module A inputs to DOM
+                if(doc.getElementById('price-general-math')) doc.getElementById('price-general-math').innerText = '৳' + document.getElementById('price_general_math').value;
+                if(doc.getElementById('price-higher-math')) doc.getElementById('price-higher-math').innerText = '৳' + document.getElementById('price_higher_math').value;
+                if(doc.getElementById('price-physics')) doc.getElementById('price-physics').innerText = '৳' + document.getElementById('price_physics').value;
+                if(doc.getElementById('price-chemistry')) doc.getElementById('price-chemistry').innerText = '৳' + document.getElementById('price_chemistry').value;
+                if(doc.getElementById('price-ict')) doc.getElementById('price-ict').innerText = '৳' + document.getElementById('price_ict').value;
+
+                // Inject Module B inputs to DOM
+                for(let i=1; i<=3; i++) {
+                    if(doc.getElementById(`notice-title-${i}`)) doc.getElementById(`notice-title-${i}`).innerText = document.getElementById(`notice_title_${i}`).value;
+                    if(doc.getElementById(`notice-desc-${i}`)) doc.getElementById(`notice-desc-${i}`).innerText = document.getElementById(`notice_desc_${i}`).value;
+                }
+
+                // Inject Module C inputs to DOM
+                const days = ['sat', 'sun', 'mon', 'tue', 'wed'];
+                days.forEach(day => {
+                    if(doc.getElementById(`routine-sub-${day}`)) doc.getElementById(`routine-sub-${day}`).innerText = document.getElementById(`routine_sub_${day}`).value;
+                    if(doc.getElementById(`routine-time-${day}`)) doc.getElementById(`routine-time-${day}`).innerText = document.getElementById(`routine_time_${day}`).value;
                 });
 
-                if(response.ok) {
-                    alert("সফলভাবে সম্পূর্ণ ওয়েবসাইট আপডেট করা হয়েছে! ১-২ মিনিটের মধ্যে লাইভ সাইটে পরিবর্তন দেখা যাবে।");
-                    fetchCurrentSiteData();
-                } else {
-                    const errData = await response.json();
-                    alert("আপডেট ব্যর্থ হয়েছে: " + errData.message);
-                }
-            } catch (err) {
-                alert("নেটওয়ার্ক এরর: " + err.message);
+                // Generate full HTML String from Document object
+                const serialization = new XMLSerializer();
+                const updatedHtmlStr = "<!DOCTYPE html>\n" + serialization.serializeToString(doc);
+
+                // Safe Unicode Base64 Encoding Engine
+                const base64EncodedData = btoa(unescape(encodeURIComponent(updatedHtmlStr)));
+
+                // PUT to GitHub API
+                const putResponse = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: "Admin Master Control Auto-Update (Production)",
+                        content: base64EncodedData,
+                        sha: fileSha
+                    })
+                });
+
+                if(!putResponse.ok) throw new Error("গিটহাব ডিপ্লয়মেন্ট ব্যর্থ হয়েছে!");
+                
+                const putResData = await putResponse.json();
+                fileSha = putResData.content.sha; // Update current operational SHA
+                
+                setLoadingState(false, "ওয়েবসাইট সফলভাবে লাইভ আপডেট করা হয়েছে!");
+            } catch (error) {
+                console.error(error);
+                setLoadingState(false, "ত্রুটি: লাইভ আপডেট সফল হয়নি।", true);
+            }
+        });
+
+        // UI State Controller
+        function setLoadingState(isLoading, message, isError = false) {
+            statusText.innerText = message;
+            if(isError) {
+                statusText.className = "inline-block text-rose-500 font-medium text-xs sm:text-sm";
+                saveUpdateBtn.disabled = false;
+                syncIcon.classList.remove('fa-spin');
+                return;
+            }
+            
+            if(isLoading) {
+                statusText.className = "inline-block text-amber-400 font-medium text-xs sm:text-sm";
+                saveUpdateBtn.disabled = true;
+                saveUpdateBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                statusText.className = "inline-block text-accentEmerald font-medium text-xs sm:text-sm";
+                saveUpdateBtn.disabled = false;
+                saveUpdateBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                syncIcon.classList.remove('fa-spin');
             }
         }
     </script>
