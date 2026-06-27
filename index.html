@@ -559,7 +559,7 @@
             alert(`"${subjectName}" বিষয়ের ফ্রি ডেমো ও ওরিয়েন্টেশন ক্লাস প্লেয়ারটি শীঘ্রই শুরু হচ্ছে! নতুন উইন্ডোতে লোড হচ্ছে...`);
         }
 
-        // Payment Gateway Simulation Core Variables &amp;amp; Handlers
+        // Payment Gateway Simulation Core Variables &amp;amp;amp; Handlers
         let selectedCourseNameGlobal = "";
         
         function openPaymentFlow(courseName, coursePrice) {
@@ -574,7 +574,7 @@
             
             // Reset state inner selections
             document.getElementById('paymentTxnContainer').classList.add('hidden');
-            document.querySelectorAll('.payment-method-btn').forEach(btn =&amp;gt; btn.classList.remove('border-emerald-500', 'border-pink-500', 'border-orange-500', 'border-purple-500'));
+            document.querySelectorAll('.payment-method-btn').forEach(btn =&amp;amp;gt; btn.classList.remove('border-emerald-500', 'border-pink-500', 'border-orange-500', 'border-purple-500'));
             document.getElementById('txnIdInput').value = "";
         }
 
@@ -584,7 +584,7 @@
             container.classList.remove('hidden');
             
             // Reset active outlines
-            document.querySelectorAll('.payment-method-btn').forEach(btn =&amp;gt; {
+            document.querySelectorAll('.payment-method-btn').forEach(btn =&amp;amp;gt; {
                 btn.classList.remove('border-emerald-500');
             });
             
